@@ -9,10 +9,10 @@
  * @copyright 2013 Nilambar Sharma
  */
 
-// If uninstall, not called from WordPress, then exit
+// If uninstall, not called from WordPress, then exit.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-//Define uninstall functionality here
+// Remove plugin options.
 delete_option( 'sa_plugin_options' );
