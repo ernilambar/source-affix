@@ -1,0 +1,127 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Source Affix\n"
+"POT-Creation-Date: 2015-04-18 20:39+0530\n"
+"PO-Revision-Date: 2015-04-18 20:39+0530\n"
+"Last-Translator: Nilambar Sharma <nilambar@outlook.com>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ../../source-affix\n"
+
+#: ../../source-affix/class-source-affix-admin.php:147
+msgid "Are you sure?"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:148
+#: ../../source-affix/class-source-affix-admin.php:249
+#: ../../source-affix/class-source-affix-admin.php:259
+msgid "Enter Title"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:149
+#: ../../source-affix/class-source-affix-admin.php:250
+#: ../../source-affix/class-source-affix-admin.php:260
+msgid "Enter Full URL"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:173
+msgid "Source Affix Settings Page"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:173
+msgid "Source Affix"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:204
+msgid "Settings"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:226
+msgid "Sources"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:265
+msgid "Add New"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:323
+msgid "Source Affix Settings"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:325
+msgid "Select Source Affix for"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:326
+msgid "Source Title"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:327
+msgid "Source Style"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:328
+msgid "Source Open Style"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:329
+msgid "Source Position"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:352
+msgid "Post"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:356
+msgid "Page"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:381
+msgid "Enter Source Title"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:387
+msgid "Comma Separated"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:388
+msgid "List"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:391
+msgid "Select source display style"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:397
+msgid "Current"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:399
+msgid "New Page"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:401
+msgid "Select how to open source page"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:408
+msgid "End of the content"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:410
+msgid "Beginning of the content"
+msgstr ""
+
+#: ../../source-affix/class-source-affix-admin.php:412
+msgid "Select position of the source"
+msgstr ""
+
+#: ../../source-affix/views/admin.php:34
+msgid "Save Changes"
+msgstr ""

@@ -1,0 +1,15 @@
+.sa-source-wrapper{
+  clear:both;
+  height: auto;
+  overflow: hidden;
+}
+.sa-source-wrapper strong{
+  float:left;
+}
+.sa-source-wrapper p.news-source{
+  float:left;
+  padding-left: 5px;
+}
+.sa-source-wrapper ul{
+  clear:both;
+}
