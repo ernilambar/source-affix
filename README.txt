@@ -14,7 +14,7 @@ A plugin for adding source links to your Post. Supports Page and Custom Post Typ
 
 <h3>Source Affix</h3>This is right plugin for you if you want to add source link to your post. It adds separate meta box for the input of source text. You can use this feature to any Post or Page. Even more, it also supports custom post type. Several plugin settings are also available. You can show sources in comma separated form or in an unordered list. You can append or prepend source to the content.
 
-
+[See screenshots](https://wordpress.org/plugins/source-affix/screenshots/)
 
 == Installation ==
 

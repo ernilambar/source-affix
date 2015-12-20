@@ -29,8 +29,6 @@
       				<form action="options.php" method="post">
       				<?php settings_fields('sa-plugin-options-group'); ?>
       				<?php do_settings_sections('source-affix-main'); ?>
-
-
       				<?php submit_button(__('Save Changes', 'source-affix')); ?>
       				</form>
 

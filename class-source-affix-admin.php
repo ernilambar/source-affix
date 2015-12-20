@@ -322,7 +322,7 @@ class Source_Affix_Admin
 
 		add_settings_section('main_settings', __( 'Source Affix Settings', 'source-affix' ) , array($this, 'source_affix_plugin_section_text_callback'), 'source-affix-main');
 
-		add_settings_field('sa_source_posttypes', __( 'Select Source Affix for', 'source-affix' ), array($this, 'sa_source_posttypes_callback'), 'source-affix-main', 'main_settings');
+		add_settings_field('sa_source_posttypes', __( 'Enable Source Affix for', 'source-affix' ), array($this, 'sa_source_posttypes_callback'), 'source-affix-main', 'main_settings');
 		add_settings_field('sa_source_title', __( 'Source Title', 'source-affix' ), array($this, 'sa_source_title_callback'), 'source-affix-main', 'main_settings');
 		add_settings_field('sa_source_style', __( 'Source Style', 'source-affix' ), array($this, 'sa_source_style_callback'), 'source-affix-main', 'main_settings');
 		add_settings_field('sa_source_open_style', __( 'Open Source Link', 'source-affix' ), array($this, 'sa_source_open_style_callback'), 'source-affix-main', 'main_settings');
@@ -342,7 +342,7 @@ class Source_Affix_Admin
 	}
 
 	function source_affix_plugin_section_text_callback() {
-    return;
+        return;
 	}
 
 	function sa_source_posttypes_callback() {
