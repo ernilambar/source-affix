@@ -1,10 +1,10 @@
 === Source Affix ===
 Contributors: rabmalin
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ramrojob1%40gmail%2ecom&lc=US&item_name=Nilambar%20Sharma&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
+Donate link: http://nilambar.net/2013/10/source-affix-wordpress-plugin.html
 Tags: post, source, metabox, custom, posts, custom post type, meta, plugin,
-Requires at least: 4.0
-Tested up to: 4.4
-Stable tag: 1.4
+Requires at least: 4.4
+Tested up to: 4.6
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,6 +45,10 @@ Nice, make a post on the [Support Forum](http://wordpress.org/support/plugin/sou
 3. Sample view of source in front end
 
 == Changelog ==
+
+= 1.5.0 =
+* Compatibility: WP 4.6
+* Fix: Minor bug fixes
 
 = 1.4 =
 * Fix: Minor bug fixes
