@@ -21,7 +21,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 define( 'SOURCE_AFFIX_VERSION', '1.5.0' );
-define( 'SOURCE_AFFIX_NAME', 'Source Affix' );
 define( 'SOURCE_AFFIX_SLUG', 'source-affix' );
 define( 'SOURCE_AFFIX_BASENAME', basename( dirname( __FILE__ ) ) );
 define( 'SOURCE_AFFIX_DIR', rtrim( plugin_dir_path( __FILE__ ), '/' ) );
