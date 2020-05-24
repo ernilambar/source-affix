@@ -29,7 +29,7 @@
 			$rss_items = array();
 
 			if ( ! is_wp_error( $rss ) ) {
-				$maxitems = $rss->get_item_quantity( 5 );
+				$maxitems  = $rss->get_item_quantity(5);
 				$rss_items = $rss->get_items( 0, $maxitems );
 			}
 			?>
@@ -38,7 +38,7 @@
 
 				<ul>
 					<?php foreach ( $rss_items as $item ) : ?>
-						<li><a href="<?php echo esc_url( $item->get_permalink() ); ?>"><?php echo esc_html( $item->get_title() ); ?></a></li>
+						<li><a href="<?php echo esc_url( $item->get_permalink() ); ?>" target="_blank"><?php echo esc_html( $item->get_title() ); ?></a></li>
 					<?php endforeach; ?>
 				</ul>
 
