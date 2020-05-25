@@ -43,13 +43,6 @@ class Source_Affix
      * @var      array
      */
     protected static $default_options = null ;
-    // protected $default_options = array(
-    //     'sa_source_posttypes' => array('post' => 1),
-    //     'sa_source_title' => 'Source :',
-    //     'sa_source_style' => 'COMMA',
-    //     'sa_source_open_style' => 'BLANK',
-    //     'sa_source_position' => 'APPEND',
-    // );
 
 	protected $options = array();
 
@@ -359,6 +352,15 @@ class Source_Affix
                         $source_message.= '<ul class="list-source-links">';
                         $source_message .= '<li>'.implode('</li><li>', $single_link).'</li>';
                         $source_message.= '</ul>';
+                    }
+                    break;
+
+                case 'ORDEREDLIST':
+                    if (!empty($single_link))
+                    {
+                        $source_message.= '<ol class="list-source-links">';
+                        $source_message .= '<li>'.implode('</li><li>', $single_link).'</li>';
+                        $source_message.= '</ol>';
                     }
                     break;
 

@@ -377,6 +377,7 @@ class Source_Affix_Admin
         <select id="sa_source_style" name="sa_plugin_options[sa_source_style]">
             <option value="COMMA" <?php selected($this -> options['sa_source_style'], 'COMMA'); ?>><?php _e("Comma Separated", 'source-affix' ); ?></option>
             <option value="LIST" <?php selected($this -> options['sa_source_style'], 'LIST'); ?>><?php _e("List",  'source-affix'); ?></option>
+            <option value="ORDEREDLIST" <?php selected($this -> options['sa_source_style'], 'ORDEREDLIST'); ?>><?php _e("Ordered List",  'source-affix'); ?></option>
         </select>
 		<?php
 	}
