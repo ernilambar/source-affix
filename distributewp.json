@@ -1,0 +1,6 @@
+{
+  "plugin_slug": "source-affix",
+  "deployment_folder": "deploy/source-affix",
+  "deploy_assets": true,
+  "assets_folder": "plugin-assets"
+}
