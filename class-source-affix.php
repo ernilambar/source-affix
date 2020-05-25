@@ -340,9 +340,13 @@ class Source_Affix
                 }
             }
 
-            $source_message = '<div class="sa-source-wrapper"><strong>' . $sa_source_title . '</strong>';
-            switch ($sa_source_style)
-            {
+            $source_message = '<div class="sa-source-wrapper">';
+
+            if ( $sa_source_title ) {
+	            $source_message .= '<strong>' . $sa_source_title . '</strong>';
+            }
+
+            switch ($sa_source_style) {
                 case 'COMMA':
                     $source_message .= '<p class="news-source">' . implode(', ', $single_link) . '</p>';
                     break;
