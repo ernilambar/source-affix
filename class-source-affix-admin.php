@@ -61,7 +61,7 @@ class Source_Affix_Admin {
 
 		// Add the post meta box to the post editor.
 		add_action( 'add_meta_boxes', array( $this, 'source_affix_add_sa_metabox' ) );
-		add_action( 'save_post', array( $this, 'source_affix_save_sa_source' ) );
+		add_action( 'save_post', array( $this, 'source_affix_save_sa_source' ), 10, 2 );
 
 		add_action( 'admin_init', array( $this, 'source_affix_plugin_register_settings' ) );
 	}
@@ -246,31 +246,39 @@ class Source_Affix_Admin {
 	}
 
 	/**
-	 * Saves the source for the given post.
+	 * Save meta box value.
 	 *
-	 * @params  $post_id    The ID of the post that we're serializing
+	 * @since 1.0.0
+	 *
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post Post object.
 	 */
-	function source_affix_save_sa_source( $post_id ) {
+	function source_affix_save_sa_source( $post_id, $post ) {
+		// Verify nonce.
+		if (
+			! ( isset( $_POST['sa_source_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['sa_source_nonce'] ), plugin_basename( __FILE__ ) ) ) ) {
+			return;
+		}
+
+		// Bail if auto save or revision.
+		if ( defined( 'DOING_AUTOSAVE' ) || is_int( wp_is_post_revision( $post ) ) || is_int( wp_is_post_autosave( $post ) ) ) {
+			return;
+		}
+
+		// Check the post being saved == the $post_id to prevent triggering this call for other save_post events.
+		if ( empty( $_POST['post_ID'] ) || absint( $_POST['post_ID'] ) !== $post_id ) {
+			return;
+		}
 
 		if ( isset( $_POST['sa_source_nonce'] ) && isset( $_POST['post_type'] ) ) {
-
-			// Don't save if the user hasn't submitted the changes
-			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-				return;
-			}
-
-			// Verify that the input is coming from the proper form.
-			if ( ! wp_verify_nonce( $_POST['sa_source_nonce'], plugin_basename( __FILE__ ) ) ) {
-				return;
-			}
 
 			$links_array = array();
 
 			if ( isset( $_POST['link_title'] ) && ! empty( $_POST['link_title'] ) ) {
 				$cnt = 0;
 				foreach ( $_POST['link_title'] as $key => $lnk ) {
-					$links_array[ $cnt ]['title'] = $lnk;
-					$links_array[ $cnt ]['url']   = $_POST['link_url'][ $key ];
+					$links_array[ $cnt ]['title'] = sanitize_text_field( $lnk );
+					$links_array[ $cnt ]['url']   = esc_url_raw( $_POST['link_url'][ $key ] );
 					$cnt++;
 				}
 			}
