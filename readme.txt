@@ -3,9 +3,10 @@
 Contributors: rabmalin
 Donate link: http://www.nilambar.net/2013/10/source-affix-wordpress-plugin.html
 Tags: post, source, metabox, custom, posts, custom post type, meta, plugin,
-Requires at least: 4.4
-Tested up to: 4.6
 Stable tag: 1.6.0
+Requires PHP: 5.6.20
+Requires at least: 5.0
+Tested up to: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,8 +15,6 @@ A plugin for adding source links to your Post. Supports Page and Custom Post Typ
 == Description ==
 
 <h3>Source Affix</h3>This is right plugin for you if you want to add source link to your post. It adds separate meta box for the input of source text. You can use this feature to any Post or Page. Even more, it also supports custom post type. Several plugin settings are also available. You can show sources in comma separated form or in an unordered list. You can append or prepend source to the content.
-
-[See screenshots](https://wordpress.org/plugins/source-affix/screenshots/)
 
 == Installation ==
 
@@ -47,6 +46,9 @@ Nice, make a post on the [Support Forum](http://wordpress.org/support/plugin/sou
 == Changelog ==
 
 = 1.6.0 =
+* Add: Add shortcode
+* Add: Ordered list display
+* Add: Option to make required
 * Fix: Minor bug fixes
 
 = 1.5.0 =
