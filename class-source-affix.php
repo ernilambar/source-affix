@@ -325,7 +325,9 @@ class Source_Affix
         {
             return $content;
         }
-        $sa_source = get_post_meta(get_the_ID(), 'sa_source', true) ;
+
+        $sa_source = get_post_meta(get_the_ID(), 'sa_source', true);
+
         if ('' != $sa_source )
         {
             $links_array = source_affix_convert_meta_to_array( $sa_source );

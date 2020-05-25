@@ -1,20 +1,20 @@
-.sa-source-wrapper{
+.sa-source-wrapper {
   clear:both;
   height: auto;
   overflow: hidden;
 }
 
-.sa-source-wrapper strong{
+.sa-source-wrapper strong {
   float:left;
   margin-right: 5px;
 }
 
-.sa-source-wrapper .news-source{
+.sa-source-wrapper .news-source {
   float:left;
   padding-left: 5px;
 }
 
 .sa-source-wrapper ul,
-.sa-source-wrapper ol{
+.sa-source-wrapper ol {
   clear:both;
 }

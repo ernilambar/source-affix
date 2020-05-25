@@ -22,14 +22,14 @@
 		<h3><span>My Blog</span></h3>
 		<div class="inside">
 			<?php
-			$rss = fetch_feed( 'https://www.www.nilambar.net/category/wordpress/feed' );
+			$rss = fetch_feed( 'https://www.nilambar.net/category/wordpress/feed' );
 
 			$maxitems = 0;
 
 			$rss_items = array();
 
 			if ( ! is_wp_error( $rss ) ) {
-				$maxitems  = $rss->get_item_quantity(5);
+				$maxitems  = $rss->get_item_quantity( 5 );
 				$rss_items = $rss->get_items( 0, $maxitems );
 			}
 			?>
