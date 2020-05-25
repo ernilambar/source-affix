@@ -328,12 +328,12 @@ class Source_Affix_Admin {
 		$post_types = array();
 
 		if ( isset( $this->options['sa_source_posttypes'] ) ) {
-		    $post_types = array_keys( $this->options['sa_source_posttypes'] );
+			$post_types = array_keys( $this->options['sa_source_posttypes'] );
 		}
 
 		// Bail if not selected post type.
 		if ( ! in_array( get_post_type( $post_id ), $post_types ) ) {
-		    return;
+			return;
 		}
 
 		$meta = get_post_meta( $post_id, 'sa_source', true );
@@ -348,18 +348,18 @@ class Source_Affix_Admin {
 		// Change status to draft.
 		global $wpdb;
 
-	    // Update post.
-	    $wpdb->update( $wpdb->posts, array( 'post_status' => 'draft' ), array( 'ID' => $post->ID ) );
+		// Update post.
+		$wpdb->update( $wpdb->posts, array( 'post_status' => 'draft' ), array( 'ID' => $post->ID ) );
 
-	    // Clean post cache.
-	    clean_post_cache( $post->ID );
+		// Clean post cache.
+		clean_post_cache( $post->ID );
 
-	    // Manage post transition
-	    $old_status = $post->post_status;
+		// Manage post transition
+		$old_status = $post->post_status;
 
-	    $post->post_status = 'draft';
+		$post->post_status = 'draft';
 
-	    wp_transition_post_status( 'draft', $old_status, $post );
+		wp_transition_post_status( 'draft', $old_status, $post );
 	}
 
 	/**
@@ -370,10 +370,10 @@ class Source_Affix_Admin {
 	function show_admin_notices() {
 		// Check if the transient is set, and display the error message.
 		if ( 'no' == get_transient( 'sa_required_check' ) ) {
-		    echo '<div id="message" class="error"><p><strong>';
-		    echo esc_html__( 'Source is required.', 'source-affix' );
-		    echo '</strong></p></div>';
-		    delete_transient( 'sa_required_check' );
+			echo '<div id="message" class="error"><p><strong>';
+			echo esc_html__( 'Source is required.', 'source-affix' );
+			echo '</strong></p></div>';
+			delete_transient( 'sa_required_check' );
 		}
 	}
 
@@ -400,12 +400,12 @@ class Source_Affix_Admin {
 			$input['sa_source_posttypes'] = array();
 		}
 
-		$input['sa_source_title']      = sanitize_text_field( $input['sa_source_title'] );
-		$input['sa_source_style']      = sanitize_text_field( $input['sa_source_style'] );
-		$input['sa_source_open_style'] = sanitize_text_field( $input['sa_source_open_style'] );
-		$input['sa_source_position']   = sanitize_text_field( $input['sa_source_position'] );
-		$input['sa_load_plugin_styles']     = sanitize_text_field( $input['sa_load_plugin_styles'] );
-		$input['sa_make_required']     = sanitize_text_field( $input['sa_make_required'] );
+		$input['sa_source_title']       = sanitize_text_field( $input['sa_source_title'] );
+		$input['sa_source_style']       = sanitize_text_field( $input['sa_source_style'] );
+		$input['sa_source_open_style']  = sanitize_text_field( $input['sa_source_open_style'] );
+		$input['sa_source_position']    = sanitize_text_field( $input['sa_source_position'] );
+		$input['sa_load_plugin_styles'] = sanitize_text_field( $input['sa_load_plugin_styles'] );
+		$input['sa_make_required']      = sanitize_text_field( $input['sa_make_required'] );
 
 		return $input;
 	}

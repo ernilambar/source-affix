@@ -75,7 +75,7 @@ class Source_Affix {
 
 		self::$default_options = array(
 			'sa_source_posttypes'  => array( 'post' => 1 ),
-			'sa_source_title'      => 'Source :',
+			'sa_source_title'      => esc_html__( 'Source :', 'source-affix' ),
 			'sa_source_style'      => 'COMMA',
 			'sa_source_open_style' => 'BLANK',
 			'sa_source_position'   => 'APPEND',
@@ -90,6 +90,7 @@ class Source_Affix {
 
 		// Define custom functionality.
 		add_filter( 'the_content', array( $this, 'source_affix_affix_sa_source' ) );
+		add_shortcode( 'source_affix', array( $this, 'render_source_affix_content' ) );
 	}
 
 	/**
@@ -314,11 +315,14 @@ class Source_Affix {
 				}
 			}
 
-			$source_message = '<div class="sa-source-wrapper">';
+			$source_message  = '<div class="sa-source-wrapper">';
+			$source_message .= '<div class="sa-source-inner">';
 
 			if ( $sa_source_title ) {
-				$source_message .= '<strong>' . $sa_source_title . '</strong>';
+				$source_message .= '<span class="source-title">' . $sa_source_title . '</span>';
 			}
+
+			$source_message .= '<div class="sa-source-content">';
 
 			switch ( $sa_source_style ) {
 				case 'COMMA':
@@ -344,6 +348,8 @@ class Source_Affix {
 					break;
 			}
 
+			$source_message .= '</div>';
+			$source_message .= '</div>';
 			$source_message .= '</div>';
 
 			if ( is_singular() && 'NO' !== $options['sa_source_position'] ) {
@@ -375,5 +381,99 @@ class Source_Affix {
 
 	public function source_affix_get_options_array() {
 		return $this->options;
+	}
+
+	public function render_source_affix_content( $atts ) {
+		$defaults = array(
+			'id'         => null,
+			'title'      => esc_html__( 'Source :', 'source-affix' ),
+			'style'      => 'comma',
+			'new_window' => true,
+		);
+
+		$options = shortcode_atts( $defaults, $atts );
+
+		if ( ! $options['id'] ) {
+			if ( is_singular() ) {
+				$options['id'] = get_the_ID();
+			}
+		}
+
+		if ( 0 === absint( $options['id'] ) ) {
+			return;
+		}
+
+		$sa_source = get_post_meta( $options['id'], 'sa_source', true );
+
+		$links_array = array();
+
+		if ( ! empty( $sa_source ) ) {
+			$links_array = source_affix_convert_meta_to_array( $sa_source );
+		}
+
+		if ( empty( $links_array ) ) {
+			return;
+		}
+
+		ob_start();
+
+		echo '<div class="sa-source-wrapper">';
+		echo '<div class="sa-source-inner">';
+
+		if ( ! empty( $options['title'] ) ) {
+			echo '<span class="source-title">' . esc_html( $options['title'] ) . '</span>';
+		}
+
+		$single_link = array();
+
+		if ( ! empty( $links_array ) && is_array( $links_array ) ) {
+			foreach ( $links_array as $key => $eachline ) {
+				if ( ! empty( $eachline['url'] ) ) {
+					$lnk  = '<a href="' . esc_url( $eachline['url'] ) . '" ';
+					$lnk .= ( true === $options['new_window'] ) ? ' target="_blank" ' : '';
+					$lnk .= ' >' . esc_html( $eachline['title'] ) . '</a>';
+				} else {
+					$lnk = esc_attr( $eachline['title'] );
+				}
+
+				$single_link[] = $lnk;
+			}
+		}
+
+		$source_message = '';
+
+		switch ( $options['style'] ) {
+			case 'comma':
+				$source_message .= '<div class="news-source">' . implode( ', ', $single_link ) . '</div>';
+				break;
+			case 'list':
+				if ( ! empty( $single_link ) ) {
+					$source_message .= '<ul class="list-source-links">';
+					$source_message .= '<li>' . implode( '</li><li>', $single_link ) . '</li>';
+					$source_message .= '</ul>';
+				}
+				break;
+
+			case 'orderedlist':
+				if ( ! empty( $single_link ) ) {
+					$source_message .= '<ol class="list-source-links">';
+					$source_message .= '<li>' . implode( '</li><li>', $single_link ) . '</li>';
+					$source_message .= '</ol>';
+				}
+				break;
+
+			default:
+				break;
+		}
+
+		echo '<div class="sa-source-content">';
+
+		echo $source_message;
+
+		echo '</div>';
+		echo '</div>';
+		echo '</div>';
+
+		return ob_get_clean();
 	}
 }

@@ -46,7 +46,7 @@ Nice, make a post on the [Support Forum](http://wordpress.org/support/plugin/sou
 == Changelog ==
 
 = 1.6.0 =
-* Add: Add shortcode
+* Add: Add shortcode "[source_affix]"
 * Add: Ordered list display
 * Add: Option to make required
 * Fix: Minor bug fixes
