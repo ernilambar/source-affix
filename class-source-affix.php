@@ -80,6 +80,7 @@ class Source_Affix {
 			'sa_source_open_style' => 'BLANK',
 			'sa_source_position'   => 'APPEND',
 			'sa_plugin_styles'     => 'YES',
+			'sa_make_required'     => 'NO',
 		);
 
 		$this->_setDefaultOptions();

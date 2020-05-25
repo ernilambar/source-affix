@@ -309,6 +309,7 @@ class Source_Affix_Admin {
 		add_settings_field( 'sa_source_open_style', __( 'Open Source Link', 'source-affix' ), array( $this, 'sa_source_open_style_callback' ), 'source-affix-main', 'main_settings' );
 		add_settings_field( 'sa_source_position', __( 'Source Position', 'source-affix' ), array( $this, 'sa_source_position_callback' ), 'source-affix-main', 'main_settings' );
 		add_settings_field( 'sa_load_plugin_styles', __( 'Load Plugin Styles', 'source-affix' ), array( $this, 'sa_load_plugin_styles_callback' ), 'source-affix-main', 'main_settings' );
+		add_settings_field( 'sa_make_required', __( 'Make Source Required', 'source-affix' ), array( $this, 'sa_make_required_callback' ), 'source-affix-main', 'main_settings' );
 	}
 
 	// Validate options.
@@ -322,6 +323,7 @@ class Source_Affix_Admin {
 		$input['sa_source_open_style'] = sanitize_text_field( $input['sa_source_open_style'] );
 		$input['sa_source_position']   = sanitize_text_field( $input['sa_source_position'] );
 		$input['sa_plugin_styles']     = sanitize_text_field( $input['sa_plugin_styles'] );
+		$input['sa_make_required']     = sanitize_text_field( $input['sa_make_required'] );
 
 		return $input;
 	}
@@ -404,6 +406,17 @@ class Source_Affix_Admin {
 			<option value="YES" <?php selected( $this->options['sa_load_plugin_styles'], 'YES' ); ?>>
 				<?php _e( 'Yes', 'source-affix' ); ?></option>
 			<option value="NO" <?php selected( $this->options['sa_load_plugin_styles'], 'NO' ); ?>>
+				<?php _e( 'No', 'source-affix' ); ?></option>
+		</select>
+		<?php
+	}
+
+	function sa_make_required_callback() {
+		?>
+		<select id="sa_make_required" name="sa_plugin_options[sa_make_required]">
+			<option value="YES" <?php selected( $this->options['sa_make_required'], 'YES' ); ?>>
+				<?php _e( 'Yes', 'source-affix' ); ?></option>
+			<option value="NO" <?php selected( $this->options['sa_make_required'], 'NO' ); ?>>
 				<?php _e( 'No', 'source-affix' ); ?></option>
 		</select>
 		<?php
