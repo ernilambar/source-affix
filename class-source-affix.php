@@ -1,20 +1,12 @@
 <?php
-
 /**
  * Source Affix
  *
- * @package   Source_Affix
- * @author    Nilambar Sharma <nilambar@outlook.com>
- * @license   GPL-2.0+
- * @link      http://nilambar.net
- * @copyright 2013 Nilambar Sharma
+ * @package Source_Affix
  */
 
 /**
  * Source Affix Plugin class.
- *
- * @package Source_Affix
- * @author  Nilambar Sharma <nilambar@outlook.com>
  */
 class Source_Affix
 {

@@ -22,7 +22,7 @@
 		<h3><span>My Blog</span></h3>
 		<div class="inside">
 			<?php
-			$rss = fetch_feed( 'https://www.nilambar.net/category/wordpress/feed' );
+			$rss = fetch_feed( 'https://www.www.nilambar.net/category/wordpress/feed' );
 
 			$maxitems = 0;
 

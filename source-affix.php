@@ -3,11 +3,11 @@
  * Source Affix Plugin.
  *
  * Plugin Name: Source Affix
- * Plugin URI: http://nilambar.net/2013/10/source-affix-wordpress-plugin.html
+ * Plugin URI: http://www.nilambar.net/2013/10/source-affix-wordpress-plugin.html
  * Description: Plugin to add sources in your posts, pages or custom post types
  * Version: 1.6.0
  * Author: Nilambar Sharma
- * Author URI: http://nilambar.net
+ * Author URI: http://www.nilambar.net
  * Text Domain: source-affix
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
