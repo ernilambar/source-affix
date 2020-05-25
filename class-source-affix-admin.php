@@ -63,7 +63,13 @@ class Source_Affix_Admin {
 		add_action( 'add_meta_boxes', array( $this, 'source_affix_add_sa_metabox' ) );
 		add_action( 'save_post', array( $this, 'source_affix_save_sa_source' ), 10, 2 );
 
+		if ( 'YES' === $this->options['sa_make_required'] ) {
+			add_action( 'save_post', array( $this, 'source_affix_check_required' ), 11, 2 );
+		}
+
 		add_action( 'admin_init', array( $this, 'source_affix_plugin_register_settings' ) );
+
+		add_action( 'admin_notices', array( $this, 'show_admin_notices' ) );
 	}
 
 	/**
@@ -255,8 +261,7 @@ class Source_Affix_Admin {
 	 */
 	function source_affix_save_sa_source( $post_id, $post ) {
 		// Verify nonce.
-		if (
-			! ( isset( $_POST['sa_source_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['sa_source_nonce'] ), plugin_basename( __FILE__ ) ) ) ) {
+		if ( ! ( isset( $_POST['sa_source_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['sa_source_nonce'] ), plugin_basename( __FILE__ ) ) ) ) {
 			return;
 		}
 
@@ -296,6 +301,83 @@ class Source_Affix_Admin {
 	}
 
 	/**
+	 * Check required.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post Post object.
+	 */
+	function source_affix_check_required( $post_id, $post ) {
+		// Verify nonce.
+		if ( ! ( isset( $_POST['sa_source_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['sa_source_nonce'] ), plugin_basename( __FILE__ ) ) ) ) {
+			return;
+		}
+
+		// Bail if auto save or revision.
+		if ( defined( 'DOING_AUTOSAVE' ) || is_int( wp_is_post_revision( $post ) ) || is_int( wp_is_post_autosave( $post ) ) ) {
+			return;
+		}
+
+		// Check the post being saved == the $post_id to prevent triggering this call for other save_post events.
+		if ( empty( $_POST['post_ID'] ) || absint( $_POST['post_ID'] ) !== $post_id ) {
+			return;
+		}
+
+		// Field option.
+		$post_types = array();
+
+		if ( isset( $this->options['sa_source_posttypes'] ) ) {
+		    $post_types = array_keys( $this->options['sa_source_posttypes'] );
+		}
+
+		// Bail if not selected post type.
+		if ( ! in_array( get_post_type( $post_id ), $post_types ) ) {
+		    return;
+		}
+
+		$meta = get_post_meta( $post_id, 'sa_source', true );
+
+		// Bail if there is meta.
+		if ( $meta ) {
+			return;
+		}
+
+		set_transient( 'sa_required_check', 'no' );
+
+		// Change status to draft.
+		global $wpdb;
+
+	    // Update post.
+	    $wpdb->update( $wpdb->posts, array( 'post_status' => 'draft' ), array( 'ID' => $post->ID ) );
+
+	    // Clean post cache.
+	    clean_post_cache( $post->ID );
+
+	    // Manage post transition
+	    $old_status = $post->post_status;
+
+	    $post->post_status = 'draft';
+
+	    wp_transition_post_status( 'draft', $old_status, $post );
+	}
+
+	/**
+	 * Show admin notices.
+	 *
+	 * @since 1.0.0
+	 */
+	function show_admin_notices() {
+		// Check if the transient is set, and display the error message.
+		if ( 'no' == get_transient( 'sa_required_check' ) ) {
+		    echo '<div id="message" class="error"><p><strong>';
+		    echo esc_html__( 'Source is required.', 'source-affix' );
+		    echo '</strong></p></div>';
+		    delete_transient( 'sa_required_check' );
+		}
+	}
+
+	/**
 	 * Register plugin settings
 	 */
 	public function source_affix_plugin_register_settings() {
@@ -322,7 +404,7 @@ class Source_Affix_Admin {
 		$input['sa_source_style']      = sanitize_text_field( $input['sa_source_style'] );
 		$input['sa_source_open_style'] = sanitize_text_field( $input['sa_source_open_style'] );
 		$input['sa_source_position']   = sanitize_text_field( $input['sa_source_position'] );
-		$input['sa_plugin_styles']     = sanitize_text_field( $input['sa_plugin_styles'] );
+		$input['sa_load_plugin_styles']     = sanitize_text_field( $input['sa_load_plugin_styles'] );
 		$input['sa_make_required']     = sanitize_text_field( $input['sa_make_required'] );
 
 		return $input;
