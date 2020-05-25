@@ -397,6 +397,8 @@ class Source_Affix_Admin
                 <?php _e("End of the content", 'source-affix' ); ?></option>
             <option value="PREPEND" <?php selected($this -> options['sa_source_position'], 'PREPEND'); ?>>
                 <?php _e("Beginning of the content", 'source-affix' ); ?></option>
+			<option value="NO" <?php selected($this -> options['sa_source_position'], 'NO'); ?>>
+                   <?php _e("Do Not Append", 'source-affix' ); ?></option>
         </select>
 		<?php
 	}

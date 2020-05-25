@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Source Affix 1.6.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/source-affix\n"
-"POT-Creation-Date: 2020-05-25 04:17:44+00:00\n"
+"POT-Creation-Date: 2020-05-25 04:20:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -107,11 +107,15 @@ msgstr ""
 msgid "Beginning of the content"
 msgstr ""
 
-#: class-source-affix-admin.php:407
-msgid "Yes"
+#: class-source-affix-admin.php:401
+msgid "Do Not Append"
 msgstr ""
 
 #: class-source-affix-admin.php:409
+msgid "Yes"
+msgstr ""
+
+#: class-source-affix-admin.php:411
 msgid "No"
 msgstr ""
 

@@ -379,7 +379,7 @@ class Source_Affix
 
             $source_message .= '</div>';
 
-            if ( is_singular() )
+            if ( is_singular() && 'NO' !== $options['sa_source_position'] )
             {
                 if ( 'APPEND' == $sa_source_position )
                 {
