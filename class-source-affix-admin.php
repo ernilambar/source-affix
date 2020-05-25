@@ -305,11 +305,15 @@ class Source_Affix_Admin {
 
 	// Validate options.
 	function source_affix_plugin_options_validate( $input ) {
-
-		$input['sa_source_title'] = sanitize_text_field( $input['sa_source_title'] );
 		if ( ! isset( $input['sa_source_posttypes'] ) ) {
 			$input['sa_source_posttypes'] = array();
 		}
+
+		$input['sa_source_title']      = sanitize_text_field( $input['sa_source_title'] );
+		$input['sa_source_style']      = sanitize_text_field( $input['sa_source_style'] );
+		$input['sa_source_open_style'] = sanitize_text_field( $input['sa_source_open_style'] );
+		$input['sa_source_position']   = sanitize_text_field( $input['sa_source_position'] );
+		$input['sa_plugin_styles']     = sanitize_text_field( $input['sa_plugin_styles'] );
 
 		return $input;
 	}
@@ -339,10 +343,10 @@ class Source_Affix_Admin {
 		if ( ! empty( $post_types_custom ) ) {
 			foreach ( $post_types_custom as $ptype ) {
 				?>
-			<p>
-				<input type="checkbox" name="sa_plugin_options[sa_source_posttypes][<?php echo $ptype; ?>]" value="1"
-				<?php checked( isset( $this->options['sa_source_posttypes'][ $ptype ] ) && 1 == $this->options['sa_source_posttypes'][ $ptype ] ); ?> />&nbsp;<?php echo ucfirst( $ptype ); ?>
-			</p>
+				<p>
+					<input type="checkbox" name="sa_plugin_options[sa_source_posttypes][<?php echo $ptype; ?>]" value="1"
+					<?php checked( isset( $this->options['sa_source_posttypes'][ $ptype ] ) && 1 == $this->options['sa_source_posttypes'][ $ptype ] ); ?> />&nbsp;<?php echo ucfirst( $ptype ); ?>
+				</p>
 				<?php
 			}
 		}
