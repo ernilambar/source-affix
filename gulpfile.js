@@ -29,7 +29,6 @@ var deploy_files_list = [
 	'readme.txt',
 	'class-source-affix.php',
 	'class-source-affix-admin.php',
-	'uninstall.php',
 	pkg.main_file
 ];
 
