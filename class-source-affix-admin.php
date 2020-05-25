@@ -319,6 +319,7 @@ class Source_Affix_Admin
 		add_settings_field('sa_source_style', __( 'Source Style', 'source-affix' ), array($this, 'sa_source_style_callback'), 'source-affix-main', 'main_settings');
 		add_settings_field('sa_source_open_style', __( 'Open Source Link', 'source-affix' ), array($this, 'sa_source_open_style_callback'), 'source-affix-main', 'main_settings');
 		add_settings_field('sa_source_position', __( 'Source Position', 'source-affix' ), array($this, 'sa_source_position_callback'), 'source-affix-main', 'main_settings');
+		add_settings_field('sa_load_plugin_styles', __( 'Load Plugin Styles', 'source-affix' ), array($this, 'sa_load_plugin_styles_callback'), 'source-affix-main', 'main_settings');
 
 
     }
@@ -396,6 +397,16 @@ class Source_Affix_Admin
                 <?php _e("End of the content", 'source-affix' ); ?></option>
             <option value="PREPEND" <?php selected($this -> options['sa_source_position'], 'PREPEND'); ?>>
                 <?php _e("Beginning of the content", 'source-affix' ); ?></option>
+        </select>
+		<?php
+	}
+	function sa_load_plugin_styles_callback() {
+		?>
+		<select id="sa_load_plugin_styles" name="sa_plugin_options[sa_load_plugin_styles]">
+            <option value="YES" <?php selected($this -> options['sa_load_plugin_styles'], 'YES'); ?>>
+                <?php _e("Yes", 'source-affix' ); ?></option>
+            <option value="NO" <?php selected($this -> options['sa_load_plugin_styles'], 'NO'); ?>>
+                <?php _e("No", 'source-affix' ); ?></option>
         </select>
 		<?php
 	}

@@ -74,11 +74,12 @@ class Source_Affix
         add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
 
         self :: $default_options = array(
-            'sa_source_posttypes' => array('post' => 1),
-            'sa_source_title' => 'Source :',
-            'sa_source_style' => 'COMMA',
-            'sa_source_open_style' => 'BLANK',
-            'sa_source_position' => 'APPEND',
+			'sa_source_posttypes'  => array('post' => 1),
+			'sa_source_title'      => 'Source :',
+			'sa_source_style'      => 'COMMA',
+			'sa_source_open_style' => 'BLANK',
+			'sa_source_position'   => 'APPEND',
+			'sa_plugin_styles'     => 'YES',
         );
 
 		$this -> _setDefaultOptions();
@@ -296,7 +297,11 @@ class Source_Affix
      */
     public function enqueue_styles()
     {
-        wp_enqueue_style($this->plugin_slug . '-plugin-styles', plugins_url('css/public.css', __FILE__), array(), self::VERSION);
+    	$options = $this->options ;
+
+    	if ( 'NO' !== $options['sa_load_plugin_styles'] ) {
+	        wp_enqueue_style($this->plugin_slug . '-plugin-styles', plugins_url('css/public.css', __FILE__), array(), self::VERSION);
+    	}
     }
 
     /**
@@ -307,7 +312,7 @@ class Source_Affix
      */
     function source_affix_affix_sa_source($content)
     {
-        $options = $this -> options ;
+        $options = $this->options;
         if ($options)
         {
             extract($options);
@@ -348,7 +353,7 @@ class Source_Affix
 
             switch ($sa_source_style) {
                 case 'COMMA':
-                    $source_message .= '<p class="news-source">' . implode(', ', $single_link) . '</p>';
+                    $source_message .= '<div class="news-source">' . implode(', ', $single_link) . '</div>';
                     break;
                 case 'LIST':
                     if (!empty($single_link))
