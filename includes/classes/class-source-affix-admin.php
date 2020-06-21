@@ -5,6 +5,8 @@
  * @package Source_Affix
  */
 
+use Nilambar\Optioner\Optioner;
+
 /**
  * Source Affix Admin class.
  */
@@ -37,6 +39,15 @@ class Source_Affix_Admin {
 	protected $options = array();
 
 	/**
+	 * Optioner instance.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var Optioner
+	 */
+	protected $optioner;
+
+	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
 	 *
@@ -47,6 +58,8 @@ class Source_Affix_Admin {
 		$plugin            = Source_Affix::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 		$this->options     = $plugin->source_affix_get_options_array();
+
+		$this->optioner = new Optioner();
 
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
@@ -70,7 +83,47 @@ class Source_Affix_Admin {
 		add_action( 'admin_init', array( $this, 'source_affix_plugin_register_settings' ) );
 
 		add_action( 'admin_notices', array( $this, 'show_admin_notices' ) );
+
+		// Setup admin page.
+		add_action( 'init', array( $this, 'setup_admin_page' ) );
 	}
+
+	/**
+	 * Setup admin page.
+	 *
+	 * @since 2.0.0
+	 */
+	public function setup_admin_page() {
+		$this->optioner->set_page(
+			array(
+				'page_title'  => esc_html__( 'Source Affix', 'source-affix' ),
+				'menu_title'  => esc_html__( 'Source Affix', 'source-affix' ),
+				'capability'  => 'manage_options',
+				'menu_slug'   => 'sasa',
+				'option_slug' => 'sa_plugin_options',
+			)
+		);
+
+		// Tab: nsfp_settings_tab.
+		$this->optioner->add_tab(
+			array(
+				'id'    => 'nsfp_settings_tab',
+				'title' => esc_html__( 'Settings', 'source-affix' ),
+			)
+		);
+
+		// Sidebar.
+		$this->optioner->set_sidebar(
+			array(
+				'render_callback' => array( $this, 'render_sidebar' ),
+				'width'           => 30,
+			)
+		);
+
+		// Run now.
+		$this->optioner->run();
+	}
+
 
 	/**
 	 * Return an instance of this class.
@@ -502,5 +555,144 @@ class Source_Affix_Admin {
 				<?php _e( 'No', 'source-affix' ); ?></option>
 		</select>
 		<?php
+	}
+
+	/**
+	 * Get post types options.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return array Options.
+	 */
+	public function get_post_types_options() {
+		$output = array(
+			'post' => esc_html__( 'Post', 'ns-featured-posts' ),
+			'page' => esc_html__( 'Page', 'ns-featured-posts' ),
+		);
+
+		$args = array(
+			'public'   => true,
+			'_builtin' => false,
+		);
+
+		$custom_types = get_post_types( $args, 'objects' );
+
+		if ( ! empty( $custom_types ) ) {
+			foreach ( $custom_types as $item ) {
+				$output[ $item->name ] = $item->labels->{'singular_name'};
+			}
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Render sidebar.
+	 *
+	 * @since 2.0.0
+	 */
+	public function render_sidebar() {
+		?>
+		<div class="sidebox">
+			<h3 class="box-heading">Help &amp; Support</h3>
+			<div class="box-content">
+				<ul>
+					<li><strong>Questions, bugs or great ideas?</strong></li>
+					<li><a href="https://wordpress.org/support/plugin/source-affix/" target="_blank">Visit plugin support page</a></li>
+					<li><strong>Wanna help make this plugin better?</strong></li>
+					<li><a href="https://wordpress.org/support/plugin/source-affix/reviews/" target="_blank">Review and rate this plugin on WordPress.org</a></li>
+				</ul>
+			</div>
+		</div><!-- .sidebox -->
+		<div class="sidebox">
+			<h3 class="box-heading">My Blog</h3>
+			<div class="box-content">
+				<?php $rss_items = $this->get_feed_items(); ?>
+
+				<?php if ( ! empty( $rss_items ) ) : ?>
+					<ul>
+						<?php foreach ( $rss_items as $item ) : ?>
+							<li><a href="<?php echo esc_url( $item['url'] ); ?>" target="_blank"><?php echo esc_html( $item['title'] ); ?></a></li>
+						<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
+			</div>
+		</div><!-- .sidebox -->
+		<?php
+	}
+
+	/**
+	 * Get feed items.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return array Feed items array.
+	 */
+	private function get_feed_items() {
+		$output = array();
+
+		$rss = fetch_feed( 'https://www.nilambar.net/category/wordpress/feed' );
+
+		$maxitems = 0;
+
+		$rss_items = array();
+
+		if ( ! is_wp_error( $rss ) ) {
+			$maxitems  = $rss->get_item_quantity( 5 );
+			$rss_items = $rss->get_items( 0, $maxitems );
+		}
+
+		if ( ! empty( $rss_items ) ) {
+			foreach ( $rss_items as $item ) {
+				$feed_item = array();
+
+				$feed_item['title'] = $item->get_title();
+				$feed_item['url']   = $item->get_permalink();
+
+				$output[] = $feed_item;
+			}
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Render attributes.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $attributes Attributes.
+	 * @param bool  $echo Whether to echo or not.
+	 */
+	public function render_attr( $attributes, $echo = true ) {
+		if ( empty( $attributes ) ) {
+			return;
+		}
+
+		$html = '';
+
+		foreach ( $attributes as $name => $value ) {
+
+			$esc_value = '';
+
+			if ( 'class' === $name && is_array( $value ) ) {
+				$value = join( ' ', array_unique( $value ) );
+			}
+
+			if ( false !== $value && 'href' === $name ) {
+				$esc_value = esc_url( $value );
+
+			} elseif ( false !== $value ) {
+				$esc_value = esc_attr( $value );
+			}
+
+			$html .= false !== $value ? sprintf( ' %s="%s"', esc_html( $name ), $esc_value ) : esc_html( " {$name}" );
+		}
+
+		if ( ! empty( $html ) && true === $echo ) {
+			echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		} else {
+			return $html;
+		}
 	}
 }
