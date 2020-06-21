@@ -25,12 +25,15 @@ define( 'SOURCE_AFFIX_BASENAME', basename( dirname( __FILE__ ) ) );
 define( 'SOURCE_AFFIX_DIR', rtrim( plugin_dir_path( __FILE__ ), '/' ) );
 define( 'SOURCE_AFFIX_URL', rtrim( plugin_dir_url( __FILE__ ), '/' ) );
 
+// Init autoload.
+require_once SOURCE_AFFIX_DIR . '/vendor/autoload.php';
+
 // Load helper.
-require_once SOURCE_AFFIX_DIR . '/includes/helper.php';
+require_once SOURCE_AFFIX_DIR . '/includes/helpers/helper.php';
 
 // Include plugin classes.
-require_once SOURCE_AFFIX_DIR . '/class-source-affix.php';
-require_once SOURCE_AFFIX_DIR . '/class-source-affix-admin.php';
+require_once SOURCE_AFFIX_DIR . '/includes/classes/class-source-affix.php';
+require_once SOURCE_AFFIX_DIR . '/includes/classes/class-source-affix-admin.php';
 
 // Register hooks that are fired when the plugin is activated or deactivated.
 register_activation_hook( __FILE__, array( 'Source_Affix', 'activate' ) );

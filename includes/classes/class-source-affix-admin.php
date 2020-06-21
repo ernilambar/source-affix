@@ -171,7 +171,7 @@ class Source_Affix_Admin {
 			wp_die( 'You do not have sufficient permissions to access this page.' );
 		}
 
-		include_once 'views/admin.php';
+		include_once SOURCE_AFFIX_DIR . '/views/admin.php';
 	}
 
 	/**
