@@ -178,17 +178,11 @@ class Source_Affix {
 	 * @return The content with affixed source.
 	 */
 	function source_affix_affix_sa_source( $content ) {
-		$options = $this->options;
+		$sa_source_posttypes = $this->get_option( 'sa_source_posttypes' );
 
-		if ( $options ) {
-			extract( $options );
-		}
+		$current_post_type = get_post_type( get_the_ID() );
 
-		$available_post_types_array = array_keys( $sa_source_posttypes );
-
-		$current_post_type          = get_post_type( get_the_ID() );
-
-		if ( ! in_array( $current_post_type, $available_post_types_array ) ) {
+		if ( ! in_array( $current_post_type, $sa_source_posttypes, true ) ) {
 			return $content;
 		}
 
@@ -263,17 +257,6 @@ class Source_Affix {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Get plugin options details.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array Options array.
-	 */
-	public function source_affix_get_options_array() {
-		return $this->options;
 	}
 
 	public function render_source_affix_content( $atts ) {

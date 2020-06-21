@@ -38,6 +38,8 @@ class Source_Affix_Admin {
 	 */
 	protected $optioner;
 
+	protected $plugin;
+
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
@@ -45,10 +47,9 @@ class Source_Affix_Admin {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
-		// Call $plugin_slug from public plugin class.
-		$plugin            = Source_Affix::get_instance();
-		$this->plugin_slug = $plugin->get_plugin_slug();
-		$this->options     = $plugin->source_affix_get_options_array();
+		$this->plugin = Source_Affix::get_instance();
+
+		$this->plugin_slug = $this->plugin->get_plugin_slug();
 
 		$this->optioner = new Optioner();
 
@@ -64,7 +65,9 @@ class Source_Affix_Admin {
 		add_action( 'add_meta_boxes', array( $this, 'source_affix_add_sa_metabox' ) );
 		add_action( 'save_post', array( $this, 'source_affix_save_sa_source' ), 10, 2 );
 
-		if ( 'YES' === $this->options['sa_make_required'] ) {
+		$sa_make_required = $this->plugin->get_option( 'sa_make_required' );
+
+		if ( 'YES' === $sa_make_required ) {
 			add_action( 'save_post', array( $this, 'source_affix_check_required' ), 11, 2 );
 		}
 
@@ -236,15 +239,9 @@ class Source_Affix_Admin {
 	public function enqueue_admin_styles() {
 		$screen = get_current_screen();
 
-		$options = $this->options;
+		$sa_source_posttypes = $this->plugin->get_option( 'sa_source_posttypes' );
 
-		if ( $options ) {
-			extract( $options );
-		}
-
-		$available_post_types_array = array_keys( $sa_source_posttypes );
-
-		if ( in_array( $screen->id, $available_post_types_array ) ) {
+		if ( in_array( $screen->id, $sa_source_posttypes, true ) ) {
 			wp_enqueue_style( 'source-affix-admin-styles', plugins_url( 'css/admin.css', __FILE__ ), array(), Source_Affix::VERSION );
 		}
 	}
@@ -259,15 +256,9 @@ class Source_Affix_Admin {
 	public function enqueue_admin_scripts() {
 		$screen = get_current_screen();
 
-		$options = $this->options;
+		$sa_source_posttypes = $this->plugin->get_option( 'sa_source_posttypes' );
 
-		if ( $options ) {
-			extract( $options );
-		}
-
-		$available_post_types_array = array_keys( $sa_source_posttypes );
-
-		if ( in_array( $screen->id, $available_post_types_array ) ) {
+		if ( in_array( $screen->id, $sa_source_posttypes, true ) ) {
 
 			$extra_array = array(
 				'lang' => array(
