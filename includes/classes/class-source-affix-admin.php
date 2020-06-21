@@ -130,7 +130,7 @@ class Source_Affix_Admin {
 				'id'      => 'sa_source_title',
 				'type'    => 'text',
 				'title'   => esc_html__( 'Source Title', 'source-affix' ),
-				'default' => esc_html__( 'Source :', 'source-affix' )
+				'default' => esc_html__( 'Source :', 'source-affix' ),
 			)
 		);
 
@@ -161,6 +161,52 @@ class Source_Affix_Admin {
 				'choices' => array(
 					'SELF'  => esc_html__( 'Same Window', 'source-affix' ),
 					'BLANK' => esc_html__( 'New Window', 'source-affix' ),
+				),
+			)
+		);
+
+		// Field: sa_source_position.
+		$this->optioner->add_field(
+			'sa_settings_tab',
+			array(
+				'id'      => 'sa_source_position',
+				'type'    => 'select',
+				'title'   => esc_html__( 'Source Position', 'source-affix' ),
+				'default' => 'APPEND',
+				'choices' => array(
+					'APPEND'  => esc_html__( 'End of the content', 'source-affix' ),
+					'PREPEND' => esc_html__( 'Beginning of the content', 'source-affix' ),
+					'NO'      => esc_html__( 'Do Not Append', 'source-affix' ),
+				),
+			)
+		);
+
+		// Field: sa_plugin_styles.
+		$this->optioner->add_field(
+			'sa_settings_tab',
+			array(
+				'id'      => 'sa_plugin_styles',
+				'type'    => 'select',
+				'title'   => esc_html__( 'Load Plugin Styles', 'source-affix' ),
+				'default' => 'YES',
+				'choices' => array(
+					'YES' => esc_html__( 'Yes', 'source-affix' ),
+					'NO'  => esc_html__( 'No', 'source-affix' ),
+				),
+			)
+		);
+
+		// field: sa_make_required.
+		$this->optioner->add_field(
+			'sa_settings_tab',
+			array(
+				'id'      => 'sa_make_required',
+				'type'    => 'select',
+				'title'   => esc_html__( 'Make Source Required', 'source-affix' ),
+				'default' => 'NO',
+				'choices' => array(
+					'YES' => esc_html__( 'Yes', 'source-affix' ),
+					'NO'  => esc_html__( 'No', 'source-affix' ),
 				),
 			)
 		);
