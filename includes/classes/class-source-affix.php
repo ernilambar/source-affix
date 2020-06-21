@@ -64,7 +64,7 @@ class Source_Affix {
 	 */
 	private function __construct() {
 		// Options.
-		$this->default_options = $this->get_default_options();
+		$this->set_default_options();
 
 		// Load plugin text domain.
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -133,21 +133,19 @@ class Source_Affix {
 	}
 
 	/**
-	 * Get default options.
+	 * Set default options.
 	 *
 	 * @since 2.0.0
-	 *
-	 * @return array Default options.
 	 */
-	public function get_default_options() {
-		return array(
-			'sa_source_posttypes'  => array( 'post' ),
-			'sa_source_title'      => esc_html__( 'Source :', 'source-affix' ),
-			'sa_source_style'      => 'COMMA',
-			'sa_source_open_style' => 'BLANK',
-			'sa_source_position'   => 'APPEND',
-			'sa_plugin_styles'     => 'YES',
-			'sa_make_required'     => 'NO',
+	public function set_default_options() {
+		$this->default_options =  array(
+			'sa_source_posttypes'   => array( 'post' ),
+			'sa_source_title'       => esc_html__( 'Source :', 'source-affix' ),
+			'sa_source_style'       => 'COMMA',
+			'sa_source_open_style'  => 'BLANK',
+			'sa_source_position'    => 'APPEND',
+			'sa_load_plugin_styles' => 'YES',
+			'sa_make_required'      => 'NO',
 		);
 	}
 
@@ -166,10 +164,10 @@ class Source_Affix {
 	 * @since 1.0.0
 	 */
 	public function enqueue_assets() {
-		$options = $this->options;
+		$sa_load_plugin_styles = $this->get_option( 'sa_load_plugin_styles' );
 
-		if ( 'NO' !== $options['sa_load_plugin_styles'] ) {
-			wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'css/public.css', __FILE__ ), array(), self::VERSION );
+		if ( 'YES' === $sa_load_plugin_styles ) {
+			wp_enqueue_style( 'source-affix-plugin-styles', SOURCE_AFFIX_URL . '/css/public.css', array(), self::VERSION );
 		}
 	}
 

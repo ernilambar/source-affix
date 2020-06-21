@@ -167,11 +167,11 @@ class Source_Affix_Admin {
 			)
 		);
 
-		// Field: sa_plugin_styles.
+		// Field: sa_load_plugin_styles.
 		$this->optioner->add_field(
 			'sa_settings_tab',
 			array(
-				'id'      => 'sa_plugin_styles',
+				'id'      => 'sa_load_plugin_styles',
 				'type'    => 'select',
 				'title'   => esc_html__( 'Load Plugin Styles', 'source-affix' ),
 				'default' => 'YES',
