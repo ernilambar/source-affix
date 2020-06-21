@@ -104,13 +104,67 @@ class Source_Affix_Admin {
 			)
 		);
 
-		// Tab: nsfp_settings_tab.
+		// Tab: sa_settings_tab.
 		$this->optioner->add_tab(
 			array(
-				'id'    => 'nsfp_settings_tab',
+				'id'    => 'sa_settings_tab',
 				'title' => esc_html__( 'Settings', 'source-affix' ),
 			)
 		);
+
+		// Field: sa_source_posttypes.
+		$this->optioner->add_field(
+			'sa_settings_tab',
+			array(
+				'id'      => 'sa_source_posttypes',
+				'type'    => 'multicheck',
+				'title'   => esc_html__( 'Enable Source Affix for', 'source-affix' ),
+				'choices' => $this->get_post_types_options(),
+			)
+		);
+
+		// Field: sa_source_title.
+		$this->optioner->add_field(
+			'sa_settings_tab',
+			array(
+				'id'      => 'sa_source_title',
+				'type'    => 'text',
+				'title'   => esc_html__( 'Source Title', 'source-affix' ),
+				'default' => esc_html__( 'Source :', 'source-affix' )
+			)
+		);
+
+		// Field: sa_source_style.
+		$this->optioner->add_field(
+			'sa_settings_tab',
+			array(
+				'id'      => 'sa_source_style',
+				'type'    => 'select',
+				'title'   => esc_html__( 'Source Style', 'source-affix' ),
+				'default' => 'COMMA',
+				'choices' => array(
+					'COMMA'       => esc_html__( 'Comma Separated', 'source-affix' ),
+					'LIST'        => esc_html__( 'List', 'source-affix' ),
+					'ORDEREDLIST' => esc_html__( 'Ordered List', 'source-affix' ),
+				),
+			)
+		);
+
+		// Field: sa_source_open_style.
+		$this->optioner->add_field(
+			'sa_settings_tab',
+			array(
+				'id'      => 'sa_source_open_style',
+				'type'    => 'select',
+				'title'   => esc_html__( 'Open Source Link', 'source-affix' ),
+				'default' => 'BLANK',
+				'choices' => array(
+					'SELF'  => esc_html__( 'Same Window', 'source-affix' ),
+					'BLANK' => esc_html__( 'New Window', 'source-affix' ),
+				),
+			)
+		);
+
 
 		// Sidebar.
 		$this->optioner->set_sidebar(
@@ -566,8 +620,8 @@ class Source_Affix_Admin {
 	 */
 	public function get_post_types_options() {
 		$output = array(
-			'post' => esc_html__( 'Post', 'ns-featured-posts' ),
-			'page' => esc_html__( 'Page', 'ns-featured-posts' ),
+			'post' => esc_html__( 'Post', 'source-affix' ),
+			'page' => esc_html__( 'Page', 'source-affix' ),
 		);
 
 		$args = array(
