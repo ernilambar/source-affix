@@ -1,8 +1,7 @@
 === Source Affix ===
 
 Contributors: rabmalin
-Donate link: http://www.nilambar.net/2013/10/source-affix-wordpress-plugin.html
-Tags: post, source, metabox, custom, posts, custom post type, meta, plugin,
+Donate link: https://www.nilambar.net/2013/10/source-affix-wordpress-plugin.html
 Tags: post, source, metabox, custom, posts, custom post type, meta, plugin,
 Stable tag: 2.0.0
 Requires PHP: 5.6.20
