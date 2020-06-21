@@ -3,7 +3,8 @@
 Contributors: rabmalin
 Donate link: http://www.nilambar.net/2013/10/source-affix-wordpress-plugin.html
 Tags: post, source, metabox, custom, posts, custom post type, meta, plugin,
-Stable tag: 1.6.0
+Tags: post, source, metabox, custom, posts, custom post type, meta, plugin,
+Stable tag: 2.0.0
 Requires PHP: 5.6.20
 Requires at least: 5.0
 Tested up to: 5.4
@@ -44,6 +45,11 @@ Nice, make a post on the [Support Forum](http://wordpress.org/support/plugin/sou
 3. Sample view of source in front end
 
 == Changelog ==
+
+= 2.0.0 =
+
+* Code refactoring
+* Minor bug fixes
 
 = 1.6.0 =
 * Add: Add shortcode "[source_affix]"
