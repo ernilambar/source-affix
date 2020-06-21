@@ -21,15 +21,6 @@ class Source_Affix_Admin {
 	protected static $instance = null;
 
 	/**
-	 * Slug of the plugin screen.
-	 *
-	 * @since    1.0.0
-	 *
-	 * @var      string
-	 */
-	protected $plugin_screen_hook_suffix = null;
-
-	/**
 	 * Plugin options.
 	 *
 	 * @since 1.0.0
@@ -65,9 +56,6 @@ class Source_Affix_Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
-		// Add the options page and menu item.
-		add_action( 'admin_menu', array( $this, 'source_affix_add_plugin_admin_menu' ) );
-
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( __FILE__ ) . 'source-affix.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'source_affix_add_action_links' ) );
@@ -79,8 +67,6 @@ class Source_Affix_Admin {
 		if ( 'YES' === $this->options['sa_make_required'] ) {
 			add_action( 'save_post', array( $this, 'source_affix_check_required' ), 11, 2 );
 		}
-
-		add_action( 'admin_init', array( $this, 'source_affix_plugin_register_settings' ) );
 
 		add_action( 'admin_notices', array( $this, 'show_admin_notices' ) );
 
@@ -99,7 +85,7 @@ class Source_Affix_Admin {
 				'page_title'  => esc_html__( 'Source Affix', 'source-affix' ),
 				'menu_title'  => esc_html__( 'Source Affix', 'source-affix' ),
 				'capability'  => 'manage_options',
-				'menu_slug'   => 'sasa',
+				'menu_slug'   => 'source-affix',
 				'option_slug' => 'sa_plugin_options',
 			)
 		);
@@ -211,7 +197,6 @@ class Source_Affix_Admin {
 			)
 		);
 
-
 		// Sidebar.
 		$this->optioner->set_sidebar(
 			array(
@@ -299,35 +284,6 @@ class Source_Affix_Admin {
 	}
 
 	/**
-	 * Register the administration menu.
-	 *
-	 * @since    1.0.0
-	 */
-	public function source_affix_add_plugin_admin_menu() {
-		$this->plugin_screen_hook_suffix = add_options_page(
-			__( 'Source Affix', 'source-affix' ),
-			__( 'Source Affix', 'source-affix' ),
-			'manage_options',
-			'source-affix',
-			array( $this, 'display_plugin_admin_page' )
-		);
-	}
-
-	/**
-	 * Render the settings page for this plugin.
-	 *
-	 * @since    1.0.0
-	 */
-	public function display_plugin_admin_page() {
-		// Check that the user is allowed to update options
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( 'You do not have sufficient permissions to access this page.' );
-		}
-
-		include_once SOURCE_AFFIX_DIR . '/views/admin.php';
-	}
-
-	/**
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since    1.0.0
@@ -335,7 +291,7 @@ class Source_Affix_Admin {
 	public function source_affix_add_action_links( $links ) {
 		return array_merge(
 			array(
-				'settings' => '<a href="' . esc_url( admin_url( 'options-general.php?page=' . $this->plugin_slug ) ) . '">' . __( 'Settings', 'source-affix' ) . '</a>',
+				'settings' => '<a href="' . esc_url( $this->optioner->get_page_url() ) . '">' . esc_html__( 'Settings', 'source-affix' ) . '</a>',
 			),
 			$links
 		);
@@ -355,14 +311,7 @@ class Source_Affix_Admin {
 
 		if ( ! empty( $available_post_types_array ) ) {
 			foreach ( $available_post_types_array as $ptype ) {
-				add_meta_box(
-					'sa_source',
-					__( 'Sources', 'source-affix' ),
-					array( $this, 'source_affix_sa_source_display' ),
-					$ptype,
-					'normal',
-					'high'
-				);
+				add_meta_box('sa_source', esc_html__( 'Sources', 'source-affix' ), array( $this, 'source_affix_sa_source_display' ), $ptype, 'normal', 'high');
 			}
 		}
 	}
@@ -528,133 +477,6 @@ class Source_Affix_Admin {
 			echo '</strong></p></div>';
 			delete_transient( 'sa_required_check' );
 		}
-	}
-
-	/**
-	 * Register plugin settings
-	 */
-	public function source_affix_plugin_register_settings() {
-		register_setting( 'sa-plugin-options-group', 'sa_plugin_options', array( $this, 'source_affix_plugin_options_validate' ) );
-
-		add_settings_section( 'main_settings', __( 'Source Affix Settings', 'source-affix' ), array( $this, 'source_affix_plugin_section_text_callback' ), 'source-affix-main' );
-
-		add_settings_field( 'sa_source_posttypes', __( 'Enable Source Affix for', 'source-affix' ), array( $this, 'sa_source_posttypes_callback' ), 'source-affix-main', 'main_settings' );
-		add_settings_field( 'sa_source_title', __( 'Source Title', 'source-affix' ), array( $this, 'sa_source_title_callback' ), 'source-affix-main', 'main_settings' );
-		add_settings_field( 'sa_source_style', __( 'Source Style', 'source-affix' ), array( $this, 'sa_source_style_callback' ), 'source-affix-main', 'main_settings' );
-		add_settings_field( 'sa_source_open_style', __( 'Open Source Link', 'source-affix' ), array( $this, 'sa_source_open_style_callback' ), 'source-affix-main', 'main_settings' );
-		add_settings_field( 'sa_source_position', __( 'Source Position', 'source-affix' ), array( $this, 'sa_source_position_callback' ), 'source-affix-main', 'main_settings' );
-		add_settings_field( 'sa_load_plugin_styles', __( 'Load Plugin Styles', 'source-affix' ), array( $this, 'sa_load_plugin_styles_callback' ), 'source-affix-main', 'main_settings' );
-		add_settings_field( 'sa_make_required', __( 'Make Source Required', 'source-affix' ), array( $this, 'sa_make_required_callback' ), 'source-affix-main', 'main_settings' );
-	}
-
-	// Validate options.
-	function source_affix_plugin_options_validate( $input ) {
-		if ( ! isset( $input['sa_source_posttypes'] ) ) {
-			$input['sa_source_posttypes'] = array();
-		}
-
-		$input['sa_source_title']       = sanitize_text_field( $input['sa_source_title'] );
-		$input['sa_source_style']       = sanitize_text_field( $input['sa_source_style'] );
-		$input['sa_source_open_style']  = sanitize_text_field( $input['sa_source_open_style'] );
-		$input['sa_source_position']    = sanitize_text_field( $input['sa_source_position'] );
-		$input['sa_load_plugin_styles'] = sanitize_text_field( $input['sa_load_plugin_styles'] );
-		$input['sa_make_required']      = sanitize_text_field( $input['sa_make_required'] );
-
-		return $input;
-	}
-
-	function source_affix_plugin_section_text_callback() {
-		return;
-	}
-
-	function sa_source_posttypes_callback() {
-		?>
-		<p>
-			<input type="checkbox" name="sa_plugin_options[sa_source_posttypes][post]" value="1"
-			<?php checked( isset( $this->options['sa_source_posttypes']['post'] ) && 1 == $this->options['sa_source_posttypes']['post'] ); ?> />&nbsp;<?php _e( 'Post', 'source-affix' ); ?>
-		</p>
-		<p>
-			<input type="checkbox" name="sa_plugin_options[sa_source_posttypes][page]" value="1"
-			<?php checked( isset( $this->options['sa_source_posttypes']['page'] ) && 1 == $this->options['sa_source_posttypes']['page'] ); ?> />&nbsp;<?php _e( 'Page', 'source-affix' ); ?>
-		</p>
-		<?php
-		$args = array(
-			'public'   => true,
-			'_builtin' => false,
-		);
-
-		$post_types_custom = get_post_types( $args );
-
-		if ( ! empty( $post_types_custom ) ) {
-			foreach ( $post_types_custom as $ptype ) {
-				?>
-				<p>
-					<input type="checkbox" name="sa_plugin_options[sa_source_posttypes][<?php echo $ptype; ?>]" value="1"
-					<?php checked( isset( $this->options['sa_source_posttypes'][ $ptype ] ) && 1 == $this->options['sa_source_posttypes'][ $ptype ] ); ?> />&nbsp;<?php echo ucfirst( $ptype ); ?>
-				</p>
-				<?php
-			}
-		}
-	}
-
-	function sa_source_title_callback() {
-		?>
-		<input type="text" id="sa_source_title" name="sa_plugin_options[sa_source_title]" value="<?php echo $this->options['sa_source_title']; ?>" />
-		<?php
-	}
-
-	function sa_source_style_callback() {
-		?>
-		<select id="sa_source_style" name="sa_plugin_options[sa_source_style]">
-			<option value="COMMA" <?php selected( $this->options['sa_source_style'], 'COMMA' ); ?>><?php _e( 'Comma Separated', 'source-affix' ); ?></option>
-			<option value="LIST" <?php selected( $this->options['sa_source_style'], 'LIST' ); ?>><?php _e( 'List', 'source-affix' ); ?></option>
-			<option value="ORDEREDLIST" <?php selected( $this->options['sa_source_style'], 'ORDEREDLIST' ); ?>><?php _e( 'Ordered List', 'source-affix' ); ?></option>
-		</select>
-		<?php
-	}
-
-	function sa_source_open_style_callback() {
-		?>
-		<select id="sa_source_open_style" name="sa_plugin_options[sa_source_open_style]">
-		<option value="SELF" <?php selected( $this->options['sa_source_open_style'], 'SELF' ); ?>><?php _e( 'Same Window', 'source-affix' ); ?></option>
-			<option value="BLANK" <?php selected( $this->options['sa_source_open_style'], 'BLANK' ); ?>><?php _e( 'New Window', 'source-affix' ); ?></option>
-		</select>
-		<?php
-	}
-
-	function sa_source_position_callback() {
-		?>
-		<select id="sa_source_position" name="sa_plugin_options[sa_source_position]">
-			<option value="APPEND" <?php selected( $this->options['sa_source_position'], 'APPEND' ); ?>>
-				<?php _e( 'End of the content', 'source-affix' ); ?></option>
-			<option value="PREPEND" <?php selected( $this->options['sa_source_position'], 'PREPEND' ); ?>>
-				<?php _e( 'Beginning of the content', 'source-affix' ); ?></option>
-			<option value="NO" <?php selected( $this->options['sa_source_position'], 'NO' ); ?>>
-				   <?php _e( 'Do Not Append', 'source-affix' ); ?></option>
-		</select>
-		<?php
-	}
-
-	function sa_load_plugin_styles_callback() {
-		?>
-		<select id="sa_load_plugin_styles" name="sa_plugin_options[sa_load_plugin_styles]">
-			<option value="YES" <?php selected( $this->options['sa_load_plugin_styles'], 'YES' ); ?>>
-				<?php _e( 'Yes', 'source-affix' ); ?></option>
-			<option value="NO" <?php selected( $this->options['sa_load_plugin_styles'], 'NO' ); ?>>
-				<?php _e( 'No', 'source-affix' ); ?></option>
-		</select>
-		<?php
-	}
-
-	function sa_make_required_callback() {
-		?>
-		<select id="sa_make_required" name="sa_plugin_options[sa_make_required]">
-			<option value="YES" <?php selected( $this->options['sa_make_required'], 'YES' ); ?>>
-				<?php _e( 'Yes', 'source-affix' ); ?></option>
-			<option value="NO" <?php selected( $this->options['sa_make_required'], 'NO' ); ?>>
-				<?php _e( 'No', 'source-affix' ); ?></option>
-		</select>
-		<?php
 	}
 
 	/**
