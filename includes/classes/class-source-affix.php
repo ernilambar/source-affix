@@ -7,26 +7,25 @@
 
 /**
  * Source Affix Plugin class.
+ *
+ * @since 1.0.0
  */
 class Source_Affix {
 
 	/**
-	 * Plugin version, used for cache-busting of style and script file references.
+	 * Plugin version.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @var string
 	 */
-	const VERSION = SOURCE_AFFIX_VERSION;
+	const VERSION = '2.0.0';
 
 	/**
-	 * Unique identifier for your plugin.
-	 *
-	 * The variable name is used as the text domain when internationalizing strings
-	 * of text. Its value should match the Text Domain file header in the main
-	 * plugin file.
+	 * Plugin slug.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @var string
 	 */
 	protected $plugin_slug = 'source-affix';
@@ -59,7 +58,7 @@ class Source_Affix {
 	protected static $instance = null;
 
 	/**
-	 * Initialize the plugin.
+	 * Constructor.
 	 *
 	 * @since 1.0.0
 	 */
@@ -74,7 +73,7 @@ class Source_Affix {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
 		self::$default_options = array(
-			'sa_source_posttypes'  => array( 'post' => 1 ),
+			'sa_source_posttypes'  => array( 'post' ),
 			'sa_source_title'      => esc_html__( 'Source :', 'source-affix' ),
 			'sa_source_style'      => 'COMMA',
 			'sa_source_open_style' => 'BLANK',
@@ -83,10 +82,10 @@ class Source_Affix {
 			'sa_make_required'     => 'NO',
 		);
 
-		$this->_setDefaultOptions();
+		$this->set_default_options();
 
 		// Get current options.
-		$this->_getCurrentOptions();
+		$this->get_current_options();
 
 		// Define custom functionality.
 		add_filter( 'the_content', array( $this, 'source_affix_affix_sa_source' ) );
@@ -96,9 +95,9 @@ class Source_Affix {
 	/**
 	 * Return the plugin slug.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 *
-	 * @return    Plugin slug variable.
+	 * @return Plugin slug.
 	 */
 	public function get_plugin_slug() {
 		return $this->plugin_slug;
@@ -107,14 +106,13 @@ class Source_Affix {
 	/**
 	 * Return an instance of this class.
 	 *
-	 * @since     1.0.0
+	 * @since 1.0.0
 	 *
-	 * @return    object    A single instance of this class.
+	 * @return object A single instance of this class.
 	 */
 	public static function get_instance() {
-
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
@@ -124,20 +122,16 @@ class Source_Affix {
 	/**
 	 * Fired when the plugin is activated.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param    boolean $network_wide    True if WPMU superadmin uses
-	 *                                    "Network Activate" action, false if
-	 *                                    WPMU is disabled or plugin is
-	 *                                    activated on an individual blog.
+	 * @param boolean $network_wide Whether network wide.
 	 */
 	public static function activate( $network_wide ) {
-
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
 			if ( $network_wide ) {
 
-				// Get all blog ids
+				// Get all blog ids.
 				$blog_ids = self::get_blog_ids();
 
 				foreach ( $blog_ids as $blog_id ) {
@@ -158,20 +152,16 @@ class Source_Affix {
 	/**
 	 * Fired when the plugin is deactivated.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param    boolean $network_wide    True if WPMU superadmin uses
-	 *                                    "Network Deactivate" action, false if
-	 *                                    WPMU is disabled or plugin is
-	 *                                    deactivated on an individual blog.
+	 * @param boolean $network_wide Whether network wide.
 	 */
 	public static function deactivate( $network_wide ) {
-
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
 			if ( $network_wide ) {
 
-				// Get all blog ids
+				// Get all blog ids.
 				$blog_ids = self::get_blog_ids();
 
 				foreach ( $blog_ids as $blog_id ) {
@@ -190,14 +180,13 @@ class Source_Affix {
 	}
 
 	/**
-	 * Fired when a new site is activated with a WPMU environment.
+	 * Fired when a new site is activated with a multisite environment.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param    int $blog_id    ID of the new blog.
+	 * @param int $blog_id ID of the new blog.
 	 */
 	public function activate_new_site( $blog_id ) {
-
 		if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
 			return;
 		}
@@ -208,34 +197,32 @@ class Source_Affix {
 	}
 
 	/**
-	 * Get all blog ids of blogs in the current network that are:
-	 * - not archived
-	 * - not spam
-	 * - not deleted
+	 * Get all active blog ids.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 *
-	 * @return   array|false    The blog ids, false if no matches.
+	 * @return array|false The blog ids, false if no matches.
 	 */
 	private static function get_blog_ids() {
-
 		global $wpdb;
 
-		// get an array of blog ids
-		$sql = "SELECT blog_id FROM $wpdb->blogs
-            WHERE archived = '0' AND spam = '0'
-            AND deleted = '0'";
+		$ids = array();
 
-		return $wpdb->get_col( $sql );
+		$output = $wpdb->get_results( "SELECT blog_id FROM $wpdb->blogs WHERE archived = '0' AND spam = '0' AND deleted = '0'", ARRAY_A );
+
+		if ( $output ) {
+			$ids = wp_list_pluck( $output, 'blog_id' );
+		}
+
+		return $ids;
 	}
 
 	/**
 	 * Fired for each blog when the plugin is activated.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	private static function single_activate() {
-		// Define activation functionality here
 		$option_name = 'sa_plugin_options';
 		update_option( $option_name, self::$default_options );
 	}
@@ -243,30 +230,24 @@ class Source_Affix {
 	/**
 	 * Fired for each blog when the plugin is deactivated.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	private static function single_deactivate() {
-		// Define deactivation functionality here
 	}
 
 	/**
 	 * Load the plugin text domain for translation.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function load_plugin_textdomain() {
-		$domain = $this->plugin_slug;
-
-		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
-
-		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
-		load_plugin_textdomain( $domain, false, basename( dirname( __FILE__ ) ) . '/languages' );
+		load_plugin_textdomain( 'source-affix' );
 	}
 
 	/**
 	 * Register and enqueue public-facing style sheet.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
 		$options = $this->options;
@@ -279,8 +260,8 @@ class Source_Affix {
 	/**
 	 * Affix source to the content.
 	 *
-	 * @params  $content    The content.
-	 * @returns             The content with affixed source.
+	 * @param  $content The content.
+	 * @return The content with affixed source.
 	 */
 	function source_affix_affix_sa_source( $content ) {
 		$options = $this->options;
@@ -290,6 +271,7 @@ class Source_Affix {
 		}
 
 		$available_post_types_array = array_keys( $sa_source_posttypes );
+
 		$current_post_type          = get_post_type( get_the_ID() );
 
 		if ( ! in_array( $current_post_type, $available_post_types_array ) ) {
@@ -302,6 +284,7 @@ class Source_Affix {
 			$links_array = source_affix_convert_meta_to_array( $sa_source );
 
 			$single_link = array();
+
 			if ( ! empty( $links_array ) && is_array( $links_array ) ) {
 				foreach ( $links_array  as $key => $eachline ) {
 					if ( ! empty( $eachline['url'] ) ) {
@@ -311,6 +294,7 @@ class Source_Affix {
 					} else {
 						$lnk = esc_attr( $eachline['title'] );
 					}
+
 					$single_link[] = $lnk;
 				}
 			}
@@ -328,12 +312,14 @@ class Source_Affix {
 				case 'COMMA':
 					$source_message .= '<div class="news-source">' . implode( ', ', $single_link ) . '</div>';
 					break;
+
 				case 'LIST':
 					if ( ! empty( $single_link ) ) {
 						$source_message .= '<ul class="list-source-links">';
 						$source_message .= '<li>' . implode( '</li><li>', $single_link ) . '</li>';
 						$source_message .= '</ul>';
 					}
+
 					break;
 
 				case 'ORDEREDLIST':
@@ -342,6 +328,7 @@ class Source_Affix {
 						$source_message .= '<li>' . implode( '</li><li>', $single_link ) . '</li>';
 						$source_message .= '</ol>';
 					}
+
 					break;
 
 				default:
@@ -364,21 +351,34 @@ class Source_Affix {
 		return $content;
 	}
 
-	private function _getCurrentOptions() {
+	/**
+	 * Fetch plugin options.
+	 *
+	 * @since 1.0.0
+	 */
+	private function get_current_options() {
 		$sa_options    = array_merge( self::$default_options, (array) get_option( 'sa_plugin_options', array() ) );
 		$this->options = $sa_options;
 	}
 
-	private function _setDefaultOptions() {
+	/**
+	 * Set default plugin options.
+	 *
+	 * @since 1.0.0
+	 */
+	private function set_default_options() {
 		if ( ! get_option( 'sa_plugin_options' ) ) {
 			update_option( 'sa_plugin_options', self::$default_options );
 		}
 	}
 
-	private function _removePluginOptions() {
-		delete_option( 'sa_plugin_options' );
-	}
-
+	/**
+	 * Get plugin options details.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array Options array.
+	 */
 	public function source_affix_get_options_array() {
 		return $this->options;
 	}
@@ -446,12 +446,14 @@ class Source_Affix {
 			case 'comma':
 				$source_message .= '<div class="news-source">' . implode( ', ', $single_link ) . '</div>';
 				break;
+
 			case 'list':
 				if ( ! empty( $single_link ) ) {
 					$source_message .= '<ul class="list-source-links">';
 					$source_message .= '<li>' . implode( '</li><li>', $single_link ) . '</li>';
 					$source_message .= '</ul>';
 				}
+
 				break;
 
 			case 'orderedlist':
@@ -460,6 +462,7 @@ class Source_Affix {
 					$source_message .= '<li>' . implode( '</li><li>', $single_link ) . '</li>';
 					$source_message .= '</ol>';
 				}
+
 				break;
 
 			default:

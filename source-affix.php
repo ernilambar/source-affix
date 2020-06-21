@@ -20,7 +20,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'SOURCE_AFFIX_VERSION', '2.0.0' );
 define( 'SOURCE_AFFIX_BASENAME', basename( dirname( __FILE__ ) ) );
 define( 'SOURCE_AFFIX_DIR', rtrim( plugin_dir_path( __FILE__ ), '/' ) );
 define( 'SOURCE_AFFIX_URL', rtrim( plugin_dir_url( __FILE__ ), '/' ) );
