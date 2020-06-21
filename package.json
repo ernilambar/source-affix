@@ -7,7 +7,10 @@
   "scripts": {
     "start": "gulp",
     "build": "gulp build",
-    "deploy": "gulp deploy"
+    "deploy": "gulp deploy",
+    "install-all": "composer install && yarn",
+    "update-all": "composer update && yarn upgrade",
+    "release": "yarn && composer install --no-dev --no-scripts -o && gulp deploy"
   },
   "repository": "github:ernilambar/source-affix",
   "devDependencies": {
