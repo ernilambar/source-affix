@@ -34,9 +34,5 @@ require_once SOURCE_AFFIX_DIR . '/includes/helpers/helper.php';
 require_once SOURCE_AFFIX_DIR . '/includes/classes/class-source-affix.php';
 require_once SOURCE_AFFIX_DIR . '/includes/classes/class-source-affix-admin.php';
 
-// Register hooks that are fired when the plugin is activated or deactivated.
-register_activation_hook( __FILE__, array( 'Source_Affix', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'Source_Affix', 'deactivate' ) );
-
 add_action( 'plugins_loaded', array( 'Source_Affix', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'Source_Affix_Admin', 'get_instance' ) );

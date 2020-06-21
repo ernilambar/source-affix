@@ -37,7 +37,7 @@ class Source_Affix {
 	 *
 	 * @var array
 	 */
-	protected static $default_options = null;
+	protected $default_options = array();
 
 	/**
 	 * Plugin options.
@@ -63,29 +63,17 @@ class Source_Affix {
 	 * @since 1.0.0
 	 */
 	private function __construct() {
+		// Options.
+		$this->default_options = $this->get_default_options();
+
 		// Load plugin text domain.
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		// Activate plugin when new blog is added.
-		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
+		// Load public-facing assets.
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
-		// Load public-facing style sheet and JavaScript.
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-
-		self::$default_options = array(
-			'sa_source_posttypes'  => array( 'post' ),
-			'sa_source_title'      => esc_html__( 'Source :', 'source-affix' ),
-			'sa_source_style'      => 'COMMA',
-			'sa_source_open_style' => 'BLANK',
-			'sa_source_position'   => 'APPEND',
-			'sa_plugin_styles'     => 'YES',
-			'sa_make_required'     => 'NO',
-		);
-
-		$this->set_default_options();
-
-		// Get current options.
-		$this->get_current_options();
+		// nsdump( $this->get_option('sa_source_posttypes') );
+		// nsdump( $this->get_option('sa_source_title') );
 
 		// Define custom functionality.
 		add_filter( 'the_content', array( $this, 'source_affix_affix_sa_source' ) );
@@ -120,119 +108,47 @@ class Source_Affix {
 	}
 
 	/**
-	 * Fired when the plugin is activated.
+	 * Get plugin option.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
-	 * @param boolean $network_wide Whether network wide.
+	 * @param string $key Option key.
+	 * @return mixed Option value.
 	 */
-	public static function activate( $network_wide ) {
-		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
-			if ( $network_wide ) {
-
-				// Get all blog ids.
-				$blog_ids = self::get_blog_ids();
-
-				foreach ( $blog_ids as $blog_id ) {
-
-					switch_to_blog( $blog_id );
-					self::single_activate();
-				}
-
-				restore_current_blog();
-			} else {
-				self::single_activate();
-			}
-		} else {
-			self::single_activate();
-		}
-	}
-
-	/**
-	 * Fired when the plugin is deactivated.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param boolean $network_wide Whether network wide.
-	 */
-	public static function deactivate( $network_wide ) {
-		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
-			if ( $network_wide ) {
-
-				// Get all blog ids.
-				$blog_ids = self::get_blog_ids();
-
-				foreach ( $blog_ids as $blog_id ) {
-
-					switch_to_blog( $blog_id );
-					self::single_deactivate();
-				}
-
-				restore_current_blog();
-			} else {
-				self::single_deactivate();
-			}
-		} else {
-			self::single_deactivate();
-		}
-	}
-
-	/**
-	 * Fired when a new site is activated with a multisite environment.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param int $blog_id ID of the new blog.
-	 */
-	public function activate_new_site( $blog_id ) {
-		if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
+	public function get_option( $key ) {
+		if ( empty( $key ) ) {
 			return;
 		}
 
-		switch_to_blog( $blog_id );
-		self::single_activate();
-		restore_current_blog();
-	}
+		$plugin_options = (array) get_option( 'sa_plugin_options' );
+		$plugin_options = array_merge( $this->default_options, $plugin_options );
 
-	/**
-	 * Get all active blog ids.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array|false The blog ids, false if no matches.
-	 */
-	private static function get_blog_ids() {
-		global $wpdb;
+		$value = null;
 
-		$ids = array();
-
-		$output = $wpdb->get_results( "SELECT blog_id FROM $wpdb->blogs WHERE archived = '0' AND spam = '0' AND deleted = '0'", ARRAY_A );
-
-		if ( $output ) {
-			$ids = wp_list_pluck( $output, 'blog_id' );
+		if ( isset( $plugin_options[ $key ] ) ) {
+			$value = $plugin_options[ $key ];
 		}
 
-		return $ids;
+		return $value;
 	}
 
 	/**
-	 * Fired for each blog when the plugin is activated.
+	 * Get default options.
 	 *
-	 * @since 1.0.0
-	 */
-	private static function single_activate() {
-		$option_name = 'sa_plugin_options';
-		update_option( $option_name, self::$default_options );
-	}
-
-	/**
-	 * Fired for each blog when the plugin is deactivated.
+	 * @since 2.0.0
 	 *
-	 * @since 1.0.0
+	 * @return array Default options.
 	 */
-	private static function single_deactivate() {
+	public function get_default_options() {
+		return array(
+			'sa_source_posttypes'  => array( 'post' ),
+			'sa_source_title'      => esc_html__( 'Source :', 'source-affix' ),
+			'sa_source_style'      => 'COMMA',
+			'sa_source_open_style' => 'BLANK',
+			'sa_source_position'   => 'APPEND',
+			'sa_plugin_styles'     => 'YES',
+			'sa_make_required'     => 'NO',
+		);
 	}
 
 	/**
@@ -245,11 +161,11 @@ class Source_Affix {
 	}
 
 	/**
-	 * Register and enqueue public-facing style sheet.
+	 * Register and enqueue public-facing assets.
 	 *
 	 * @since 1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_assets() {
 		$options = $this->options;
 
 		if ( 'NO' !== $options['sa_load_plugin_styles'] ) {
@@ -349,27 +265,6 @@ class Source_Affix {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Fetch plugin options.
-	 *
-	 * @since 1.0.0
-	 */
-	private function get_current_options() {
-		$sa_options    = array_merge( self::$default_options, (array) get_option( 'sa_plugin_options', array() ) );
-		$this->options = $sa_options;
-	}
-
-	/**
-	 * Set default plugin options.
-	 *
-	 * @since 1.0.0
-	 */
-	private function set_default_options() {
-		if ( ! get_option( 'sa_plugin_options' ) ) {
-			update_option( 'sa_plugin_options', self::$default_options );
-		}
 	}
 
 	/**
