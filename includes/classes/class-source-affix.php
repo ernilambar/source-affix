@@ -201,7 +201,7 @@ class Source_Affix {
 		$output = array();
 
 		$defaults = array(
-			'new_window' => false,
+			'new_window' => true,
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -233,12 +233,21 @@ class Source_Affix {
 		return $output;
 	}
 
-	public function get_source_links_markup( $post_id, $type = 'COMMA' ) {
-		$links = $this->get_post_source_links( $post_id, array() );
+	public function get_source_links_markup( $post_id, $args = array() ) {
+		$defaults = array(
+			'style'      => 'COMMA',
+			'new_window' => true,
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$links = $this->get_post_source_links( $post_id, $args );
 
 		if ( ! is_array( $links ) || empty( $links ) ) {
 			return;
 		}
+
+		$type = $args['style'];
 
 		$html = '';
 
@@ -272,13 +281,14 @@ class Source_Affix {
 		$html = '';
 
 		$defaults = array(
-			'title' => '',
-			'type'  => 'COMMA',
+			'title'      => '',
+			'style'      => 'COMMA',
+			'new_window' => true,
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$links_content = $this->get_source_links_markup( $post_id, $args['type'] );
+		$links_content = $this->get_source_links_markup( $post_id, $args );
 
 		if ( empty( $links_content ) ) {
 			return;
@@ -325,7 +335,13 @@ class Source_Affix {
 					return $content;
 				}
 
-				$source_content = $this->get_source_content_markup( $current_post_id );
+				$params = array(
+					'title'      => $this->get_option( 'sa_source_title' ),
+					'style'      => $this->get_option( 'sa_source_style' ),
+					'new_window' => ( 'BLANK' === $this->get_option( 'sa_source_open_style' ) ) ? true : false,
+				);
+
+				$source_content = $this->get_source_content_markup( $current_post_id, $params );
 
 				if ( 'APPEND' === $sa_source_position ) {
 					$content = $content . $source_content;
