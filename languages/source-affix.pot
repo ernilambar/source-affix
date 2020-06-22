@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Source Affix 2.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/source-affix\n"
-"POT-Creation-Date: 2020-06-22 06:46:25+00:00\n"
+"POT-Creation-Date: 2020-06-22 11:49:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,121 +17,120 @@ msgstr ""
 msgid "Source Affix"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:100
-#: includes/classes/class-source-affix-admin.php:285
+#: includes/classes/class-source-affix-admin.php:98
+#: includes/classes/class-source-affix-admin.php:270
 msgid "Settings"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:110
+#: includes/classes/class-source-affix-admin.php:108
 msgid "Enable Source Affix for"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:121
+#: includes/classes/class-source-affix-admin.php:120
 msgid "Source Title"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:122
-#: includes/classes/class-source-affix.php:143
-#: includes/classes/class-source-affix.php:265
-msgid "Source :"
-msgstr ""
-
-#: includes/classes/class-source-affix-admin.php:132
+#: includes/classes/class-source-affix-admin.php:131
 msgid "Source Style"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:135
+#: includes/classes/class-source-affix-admin.php:134
 msgid "Comma Separated"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:136
+#: includes/classes/class-source-affix-admin.php:135
 msgid "List"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:137
+#: includes/classes/class-source-affix-admin.php:136
 msgid "Ordered List"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:148
+#: includes/classes/class-source-affix-admin.php:147
 msgid "Open Source Link"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:151
+#: includes/classes/class-source-affix-admin.php:150
 msgid "Same Window"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:152
+#: includes/classes/class-source-affix-admin.php:151
 msgid "New Window"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:163
+#: includes/classes/class-source-affix-admin.php:162
 msgid "Source Position"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:166
+#: includes/classes/class-source-affix-admin.php:165
 msgid "End of the content"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:167
+#: includes/classes/class-source-affix-admin.php:166
 msgid "Beginning of the content"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:168
+#: includes/classes/class-source-affix-admin.php:167
 msgid "Do Not Append"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:179
+#: includes/classes/class-source-affix-admin.php:178
 msgid "Load Plugin Styles"
+msgstr ""
+
+#: includes/classes/class-source-affix-admin.php:181
+#: includes/classes/class-source-affix-admin.php:196
+msgid "Yes"
 msgstr ""
 
 #: includes/classes/class-source-affix-admin.php:182
 #: includes/classes/class-source-affix-admin.php:197
-msgid "Yes"
-msgstr ""
-
-#: includes/classes/class-source-affix-admin.php:183
-#: includes/classes/class-source-affix-admin.php:198
 msgid "No"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:194
+#: includes/classes/class-source-affix-admin.php:193
 msgid "Make Source Required"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:265
+#: includes/classes/class-source-affix-admin.php:248
 msgid "Are you sure?"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:266
-#: includes/classes/class-source-affix-admin.php:326
-#: includes/classes/class-source-affix-admin.php:335
+#: includes/classes/class-source-affix-admin.php:249
+#: includes/classes/class-source-affix-admin.php:311
+#: includes/classes/class-source-affix-admin.php:320
 msgid "Enter Title"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:267
-#: includes/classes/class-source-affix-admin.php:327
-#: includes/classes/class-source-affix-admin.php:336
+#: includes/classes/class-source-affix-admin.php:250
+#: includes/classes/class-source-affix-admin.php:312
+#: includes/classes/class-source-affix-admin.php:321
 msgid "Enter Full URL"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:305
+#: includes/classes/class-source-affix-admin.php:286
 msgid "Sources"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:342
+#: includes/classes/class-source-affix-admin.php:327
 msgid "Add New"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:467
+#: includes/classes/class-source-affix-admin.php:445
 msgid "Source is required."
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:482
+#: includes/classes/class-source-affix-admin.php:460
 msgid "Post"
 msgstr ""
 
-#: includes/classes/class-source-affix-admin.php:483
+#: includes/classes/class-source-affix-admin.php:461
 msgid "Page"
+msgstr ""
+
+#: includes/classes/class-source-affix.php:142
+#: includes/classes/class-source-affix.php:395
+msgid "Source :"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
