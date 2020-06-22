@@ -45,8 +45,7 @@ gulp.task('style', () => {
     .pipe(postcss([
       postcssImport(),
       precss(),
-      autoprefixer('last 4 version'),
-      cssnano(),
+      autoprefixer('last 4 version')
     ]))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('assets/css/'));
