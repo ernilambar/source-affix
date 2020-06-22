@@ -279,7 +279,7 @@ class Source_Affix_Admin {
 
 		if ( ! empty( $sa_source_posttypes ) ) {
 			foreach ( $sa_source_posttypes as $ptype ) {
-				add_meta_box('sa_source', esc_html__( 'Sources', 'source-affix' ), array( $this, 'source_affix_sa_source_display' ), $ptype, 'normal', 'high');
+				add_meta_box( 'sa_source', esc_html__( 'Sources', 'source-affix' ), array( $this, 'source_affix_sa_source_display' ), $ptype, 'normal', 'high' );
 			}
 		}
 	}

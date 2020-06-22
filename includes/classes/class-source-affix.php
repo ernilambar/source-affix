@@ -146,7 +146,7 @@ class Source_Affix {
 	 * @since 2.0.0
 	 */
 	public function set_default_options() {
-		$this->default_options =  array(
+		$this->default_options = array(
 			'sa_source_posttypes'   => array( 'post' ),
 			'sa_source_title'       => esc_html__( 'Source :', 'source-affix' ),
 			'sa_source_style'       => 'COMMA',
@@ -321,11 +321,11 @@ class Source_Affix {
 	 */
 	function source_affix_affix_sa_source( $content ) {
 		// Check if we're inside the main loop in a single post.
-	    if ( is_singular() && in_the_loop() && is_main_query() ) {
-	    	$sa_source_position = $this->get_option( 'sa_source_position' );
+		if ( is_singular() && in_the_loop() && is_main_query() ) {
+			$sa_source_position = $this->get_option( 'sa_source_position' );
 
-	    	if ( 'NO' !== $sa_source_position ) {
-		    	$current_post_id = get_the_ID();
+			if ( 'NO' !== $sa_source_position ) {
+				$current_post_id = get_the_ID();
 
 				$sa_source_posttypes = $this->get_option( 'sa_source_posttypes' );
 
@@ -348,8 +348,8 @@ class Source_Affix {
 				} else {
 					$content = $source_content . $content;
 				}
-	    	}
-	    }
+			}
+		}
 
 		return $content;
 	}
