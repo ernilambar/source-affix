@@ -67,7 +67,6 @@ class Source_Affix {
 		add_filter( 'the_content', array( $this, 'append_sa_source' ) );
 		add_shortcode( 'source_affix', array( $this, 'render_source_affix_content' ) );
 
-
 		// Migrate options.
 		add_action( 'init', array( $this, 'migrate_options' ) );
 	}
@@ -432,10 +431,7 @@ class Source_Affix {
 			return;
 		}
 
-		nspre( 'migration ON' );
-
 		$opt = get_option( 'sa_plugin_options' );
-		nspre( $opt, 'opt' );
 
 		if ( $opt ) {
 			if ( isset( $opt['sa_source_posttypes'] ) && ! empty( $opt['sa_source_posttypes'] ) ) {
@@ -447,8 +443,6 @@ class Source_Affix {
 				if ( ! empty( $values ) ) {
 					$opt['sa_source_posttypes'] = $values;
 				}
-
-				nspre( $opt, 'inside - opt' );
 
 				update_option( 'sa_plugin_options', $opt );
 			}
