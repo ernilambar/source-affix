@@ -211,7 +211,6 @@ class Source_Affix_Admin {
 		$this->optioner->run();
 	}
 
-
 	/**
 	 * Return an instance of this class.
 	 *
