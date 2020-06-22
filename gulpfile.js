@@ -32,32 +32,22 @@ var deploy_files_list = [
 	pkg.main_file
 ];
 
-// Style.
-gulp.task('style', () => {
-  const postcss = require('gulp-postcss');
-  const sourcemaps = require('gulp-sourcemaps');
-  const postcssImport = require('postcss-import');
-  const precss = require('precss');
-  const autoprefixer = require('autoprefixer');
-  const cssnano = require('cssnano');
-  const rename = require('gulp-rename');
-  const filter = require('gulp-filter');
-  return gulp
-    .src('src/styles/*.css')
-    .pipe(sourcemaps.init())
-    .pipe(postcss([
-      postcssImport(),
-      precss(),
-      autoprefixer('last 4 version')
-    ]))
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('assets/css/'))
-    .pipe(filter('**/*.css'))
-    .pipe(postcss([
-      cssnano()
-    ]))
-    .pipe(rename({ extname: '.min.css' }))
-    .pipe(gulp.dest('assets/css'))
+// SASS.
+gulp.task('scss', function () {
+    const { autoprefixer, cleanCss, notify, plumber, sass, sassGlob, uglify, rename, sourcemaps, filter } = gulpPlugins;
+    return gulp.src(rootPath + 'src/sass/*.scss')
+        .on('error', sass.logError)
+        .pipe(sourcemaps.init())
+        .pipe(plumber())
+        .pipe(sassGlob())
+        .pipe(sass())
+        .pipe(autoprefixer('last 4 version'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('assets/css'))
+        .pipe(filter('**/*.css'))
+        .pipe(cleanCss())
+        .pipe(rename({ extname: '.min.css' }))
+        .pipe(gulp.dest('assets/css'))
 });
 
 // Watch.
@@ -103,8 +93,10 @@ gulp.task('copy:deploy', function() {
 // Tasks.
 gulp.task( 'default', gulp.series('watch'));
 
+gulp.task( 'style', gulp.series('scss'));
+
 gulp.task( 'textdomain', gulp.series('language', 'pot'));
 
-gulp.task( 'build', gulp.series('textdomain'));
+gulp.task( 'build', gulp.series('style', 'textdomain'));
 
 gulp.task( 'deploy', gulp.series('clean:deploy', 'copy:deploy'));
