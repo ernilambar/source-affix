@@ -22,13 +22,11 @@ var browserSync = require('browser-sync').create();
 
 // Deploy files list.
 var deploy_files_list = [
-	'css/**',
+	'assets/**',
 	'includes/**',
-	'js/**',
-	'views/**',
+	'languages/**',
+	'vendor/**',
 	'readme.txt',
-	'class-source-affix.php',
-	'class-source-affix-admin.php',
 	pkg.main_file
 ];
 
@@ -75,7 +73,7 @@ gulp.task( 'watch', function() {
     gulp.watch( rootPath + 'src/sass/**/**/*.scss', gulp.series( 'scss' ) ).on('change',browserSync.reload);
 
     // Watch JS files.
-    gulp.watch( rootPath + 'src/scripts/*.js', gulp.series( 'scripts' ) ).on('change',browserSync.reload);
+    gulp.watch( rootPath + 'src/scripts/**/**/*.js', gulp.series( 'scripts' ) ).on('change',browserSync.reload);
 
     // Watch PHP files.
     gulp.watch( rootPath + '**/**/*.php' ).on('change',browserSync.reload);
