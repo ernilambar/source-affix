@@ -66,6 +66,10 @@ class Source_Affix {
 		// Define custom functionality.
 		add_filter( 'the_content', array( $this, 'append_sa_source' ) );
 		add_shortcode( 'source_affix', array( $this, 'render_source_affix_content' ) );
+
+
+		// Migrate options.
+		add_action( 'init', array( $this, 'migrate_options' ) );
 	}
 
 	/**
@@ -416,5 +420,35 @@ class Source_Affix {
 		);
 
 		return $this->get_source_content_markup( $atts['id'], $params );
+	}
+
+	/**
+	 * Migrate options.
+	 *
+	 * @since 2.0.0
+	 */
+	public function migrate_options() {
+		if ( 'yes' === get_option( 'nssa_option_migration_complete' ) ) {
+			return;
+		}
+
+		$opt = get_option( 'sa_plugin_options' );
+
+		if ( $opt ) {
+			if ( isset( $opt['sa_source_posttypes'] ) && ! empty( $opt['sa_source_posttypes'] ) ) {
+
+				$values = array_keys( $opt['sa_source_posttypes'] );
+
+				$values = array_filter( $values );
+
+				if ( ! empty( $values ) ) {
+					$opt['sa_source_posttypes'] = $values;
+				}
+
+				update_option( 'sa_plugin_options', $opt );
+			}
+		}
+
+		update_option( 'nssa_option_migration_complete', 'yes' );
 	}
 }
