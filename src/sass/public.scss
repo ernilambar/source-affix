@@ -2,17 +2,15 @@
 	clear:both;
 	height: auto;
 	overflow: hidden;
-}
 
-.sa-source-wrapper {
 	.source-title {
 		font-weight: 700;
 		float:left;
 		margin-right: 5px;
 	}
-}
 
-.sa-source-wrapper ul,
-.sa-source-wrapper ol {
-	clear:both;
+	ul,
+	ol {
+		clear:both;
+	}
 }
