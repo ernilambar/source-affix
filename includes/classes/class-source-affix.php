@@ -220,9 +220,9 @@ class Source_Affix {
 							$target_string .= ' target="_blank"';
 						}
 
-						$item .= '<a href="' . esc_url( $item['url'] ) . '"' . ( $target_string ? $target_string : '' ) . '>' . esc_html( $item['title'] ) . '</a>';
+						$item = '<a href="' . esc_url( $link['url'] ) . '" ' . ( $target_string ? $target_string : '' ) . '>' . esc_html( $link['title'] ) . '</a>';
 					} else {
-						$item .= esc_html( $item['title'] );
+						$item = esc_html( $link['title'] );
 					}
 				}
 
@@ -233,7 +233,9 @@ class Source_Affix {
 		return $output;
 	}
 
-	public function get_source_links_markup( $links, $type = 'COMMA' ) {
+	public function get_source_links_markup( $post_id, $type = 'COMMA' ) {
+		$links = $this->get_post_source_links( $post_id, array() );
+
 		if ( ! is_array( $links ) || empty( $links ) ) {
 			return;
 		}
@@ -266,6 +268,41 @@ class Source_Affix {
 		return $html;
 	}
 
+	public function get_source_content_markup( $post_id, $args = array() ) {
+		$html = '';
+
+		$defaults = array(
+			'title' => '',
+			'type'  => 'COMMA',
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$links_content = $this->get_source_links_markup( $post_id, $args['type'] );
+
+		if ( empty( $links_content ) ) {
+			return;
+		}
+
+		ob_start();
+		?>
+		<div class="sa-source-wrapper">
+			<div class="sa-source-inner">
+				<?php if ( ! empty( $args['title'] ) ) : ?>
+					<span class="source-title"><?php echo esc_html( $args['title'] ); ?></span>
+				<?php endif; ?>
+
+				<div class="sa-source-content">
+					<?php echo wp_kses_post( $links_content ); ?>
+				</div><!-- .sa-source-content -->
+			</div><!-- .sa-source-inner -->
+		</div><!-- .sa-source-wrapper -->
+		<?php
+		$html = ob_get_clean();
+
+		return $html;
+	}
+
 	/**
 	 * Affix source to the content.
 	 *
@@ -273,86 +310,30 @@ class Source_Affix {
 	 * @return The content with affixed source.
 	 */
 	function source_affix_affix_sa_source( $content ) {
+		// Check if we're inside the main loop in a single post.
+	    if ( is_singular() && in_the_loop() && is_main_query() ) {
+	    	$sa_source_position = $this->get_option( 'sa_source_position' );
 
-		$this->get_post_source_details( get_the_ID() );
+	    	if ( 'NO' !== $sa_source_position ) {
+		    	$current_post_id = get_the_ID();
 
-		$sa_source_posttypes = $this->get_option( 'sa_source_posttypes' );
+				$sa_source_posttypes = $this->get_option( 'sa_source_posttypes' );
 
-		$current_post_type = get_post_type( get_the_ID() );
+				$current_post_type = get_post_type( $current_post_id );
 
-		if ( ! in_array( $current_post_type, $sa_source_posttypes, true ) ) {
-			return $content;
-		}
-
-		$sa_source = get_post_meta( get_the_ID(), 'sa_source', true );
-
-		if ( '' != $sa_source ) {
-			$links_array = source_affix_convert_meta_to_array( $sa_source );
-
-			$single_link = array();
-
-			if ( ! empty( $links_array ) && is_array( $links_array ) ) {
-				foreach ( $links_array  as $key => $eachline ) {
-					if ( ! empty( $eachline['url'] ) ) {
-						$lnk  = '<a href="' . $eachline['url'] . '" ';
-						$lnk .= ( $sa_source_open_style == 'BLANK' ) ? ' target="_blank" ' : '';
-						$lnk .= ' >' . esc_attr( $eachline['title'] ) . '</a>';
-					} else {
-						$lnk = esc_attr( $eachline['title'] );
-					}
-
-					$single_link[] = $lnk;
+				if ( ! in_array( $current_post_type, $sa_source_posttypes, true ) ) {
+					return $content;
 				}
-			}
 
-			$source_message  = '<div class="sa-source-wrapper">';
-			$source_message .= '<div class="sa-source-inner">';
+				$source_content = $this->get_source_content_markup( $current_post_id );
 
-			if ( $sa_source_title ) {
-				$source_message .= '<span class="source-title">' . $sa_source_title . '</span>';
-			}
-
-			$source_message .= '<div class="sa-source-content">';
-
-			switch ( $sa_source_style ) {
-				case 'COMMA':
-					$source_message .= '<div class="news-source">' . implode( ', ', $single_link ) . '</div>';
-					break;
-
-				case 'LIST':
-					if ( ! empty( $single_link ) ) {
-						$source_message .= '<ul class="list-source-links">';
-						$source_message .= '<li>' . implode( '</li><li>', $single_link ) . '</li>';
-						$source_message .= '</ul>';
-					}
-
-					break;
-
-				case 'ORDEREDLIST':
-					if ( ! empty( $single_link ) ) {
-						$source_message .= '<ol class="list-source-links">';
-						$source_message .= '<li>' . implode( '</li><li>', $single_link ) . '</li>';
-						$source_message .= '</ol>';
-					}
-
-					break;
-
-				default:
-					break;
-			}
-
-			$source_message .= '</div>';
-			$source_message .= '</div>';
-			$source_message .= '</div>';
-
-			if ( is_singular() && 'NO' !== $options['sa_source_position'] ) {
-				if ( 'APPEND' == $sa_source_position ) {
-					$content = $content . $source_message;
+				if ( 'APPEND' === $sa_source_position ) {
+					$content = $content . $source_content;
 				} else {
-					$content = $source_message . $content;
+					$content = $source_content . $content;
 				}
-			}
-		}
+	    	}
+	    }
 
 		return $content;
 	}
