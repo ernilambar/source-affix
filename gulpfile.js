@@ -50,6 +50,20 @@ gulp.task('scss', function () {
         .pipe(gulp.dest('assets/css'))
 });
 
+// Scripts.
+gulp.task('scripts', function() {
+    const { plumber, rename, uglify, jshint } = gulpPlugins;
+    return gulp.src( [rootPath + 'src/scripts/*.js'] )
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'))
+        .pipe(jshint.reporter('fail'))
+        .pipe(plumber())
+        .pipe(gulp.dest('assets/js'))
+        .pipe(rename({suffix: '.min'}))
+        .pipe(uglify())
+        .pipe(gulp.dest('assets/js'))
+});
+
 // Watch.
 gulp.task( 'watch', function() {
     browserSync.init({
@@ -57,8 +71,11 @@ gulp.task( 'watch', function() {
         open: true
     });
 
-    // Watch CSS files.
-    gulp.watch( rootPath + 'src/styles/**/**/*.css' ).on('change',browserSync.reload);
+    // Watch SASS files.
+    gulp.watch( rootPath + 'src/sass/**/**/*.scss', gulp.series( 'scss' ) ).on('change',browserSync.reload);
+
+    // Watch JS files.
+    gulp.watch( rootPath + 'src/scripts/*.js', gulp.series( 'scripts' ) ).on('change',browserSync.reload);
 
     // Watch PHP files.
     gulp.watch( rootPath + '**/**/*.php' ).on('change',browserSync.reload);
@@ -93,10 +110,10 @@ gulp.task('copy:deploy', function() {
 // Tasks.
 gulp.task( 'default', gulp.series('watch'));
 
-gulp.task( 'style', gulp.series('scss'));
+gulp.task( 'styles', gulp.series('scss'));
 
 gulp.task( 'textdomain', gulp.series('language', 'pot'));
 
-gulp.task( 'build', gulp.series('style', 'textdomain'));
+gulp.task( 'build', gulp.series('styles', 'scripts', 'textdomain'));
 
 gulp.task( 'deploy', gulp.series('clean:deploy', 'copy:deploy'));

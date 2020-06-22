@@ -1,0 +1,29 @@
+{
+    "boss": true,
+    "curly": true,
+    "eqeqeq": true,
+    "eqnull": true,
+    "es3": true,
+    "expr": true,
+    "immed": true,
+    "noarg": true,
+    "nonbsp": true,
+    "node": true,
+    "onevar": true,
+    "quotmark": "single",
+    "trailing": true,
+    "undef": true,
+    "unused": true,
+    "sub": true,
+    "browser": true,
+    "globals": {
+        "_": false,
+        "Backbone": false,
+        "jQuery": false,
+        "SAF_OBJ": false,
+        "ajaxurl": false,
+        "JSON": false,
+        "wp": false,
+        "confirm": true
+    }
+}
