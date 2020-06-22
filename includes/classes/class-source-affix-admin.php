@@ -14,9 +14,9 @@ class Source_Affix_Admin {
 	/**
 	 * Instance of this class.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 *
-	 * @var      object
+	 * @var object
 	 */
 	protected static $instance = null;
 
@@ -39,10 +39,9 @@ class Source_Affix_Admin {
 	protected $plugin;
 
 	/**
-	 * Initialize the plugin by loading admin scripts & styles and adding a
-	 * settings page and menu.
+	 * Initialize the plugin.
 	 *
-	 * @since     1.0.0
+	 * @since 1.0.0
 	 */
 	private function __construct() {
 		$this->plugin = Source_Affix::get_instance();
@@ -222,7 +221,7 @@ class Source_Affix_Admin {
 	 */
 	public static function get_instance() {
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
@@ -252,7 +251,7 @@ class Source_Affix_Admin {
 				),
 			);
 
-			wp_enqueue_script( 'source-affix-admin-script', SOURCE_AFFIX_URL . '/assets/js/admin' . $min . '.js', array( 'jquery', 'jquery-ui-sortable' ), Source_Affix::VERSION );
+			wp_enqueue_script( 'source-affix-admin-script', SOURCE_AFFIX_URL . '/assets/js/admin' . $min . '.js', array( 'jquery', 'jquery-ui-sortable' ), Source_Affix::VERSION, true );
 			wp_localize_script( 'source-affix-admin-script', 'SAF_OBJ', $extra_array );
 		}
 	}
@@ -261,6 +260,9 @@ class Source_Affix_Admin {
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $links Links.
+	 * @return array Modified links.
 	 */
 	public function source_affix_add_action_links( $links ) {
 		return array_merge(
@@ -272,9 +274,11 @@ class Source_Affix_Admin {
 	}
 
 	/**
-	 * Adds the meta box below the post content editor on the post edit dashboard.
+	 * Add meta box.
+	 *
+	 * @since 1.0.0
 	 */
-	function source_affix_add_sa_metabox() {
+	public function source_affix_add_sa_metabox() {
 		$sa_source_posttypes = $this->plugin->get_option( 'sa_source_posttypes' );
 
 		if ( ! empty( $sa_source_posttypes ) ) {
@@ -285,9 +289,13 @@ class Source_Affix_Admin {
 	}
 
 	/**
-	 * Renders the nonce and the textarea for the notice.
+	 * Render metabox content.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Post $post Post object.
 	 */
-	function source_affix_sa_source_display( $post ) {
+	public function source_affix_sa_source_display( $post ) {
 		wp_nonce_field( plugin_basename( __FILE__ ), 'sa_source_nonce' );
 
 		$source_meta = get_post_meta( $post->ID, 'sa_source', true );
@@ -300,8 +308,8 @@ class Source_Affix_Admin {
 			foreach ( $links_array as $key => $link ) {
 				echo '<li>';
 				echo '<span class="btn-move-source-link"><i class="dashicons dashicons-sort"></i></span>';
-				echo '<input type="text" name="link_title[]" value="' . esc_attr( $link['title'] ) . '"  class="regular-text1 code" placeholder="' . __( 'Enter Title', 'source-affix' ) . '" />';
-				echo '<input type="text" name="link_url[]" value="' . esc_url( $link['url'] ) . '"  class="regular-text code" placeholder="' . __( 'Enter Full URL', 'source-affix' ) . '" />';
+				echo '<input type="text" name="link_title[]" value="' . esc_attr( $link['title'] ) . '"  class="regular-text1 code" placeholder="' . esc_attr__( 'Enter Title', 'source-affix' ) . '" />';
+				echo '<input type="text" name="link_url[]" value="' . esc_url( $link['url'] ) . '"  class="regular-text code" placeholder="' . esc_attr__( 'Enter Full URL', 'source-affix' ) . '" />';
 				echo '<span class="btn-remove-source-link"><i class="dashicons dashicons-no-alt"></i></span>';
 				echo '</li>';
 			}
@@ -309,16 +317,14 @@ class Source_Affix_Admin {
 			// Show empty first field.
 			echo '<li>';
 			echo '<span class="btn-move-source-link"><i class="dashicons dashicons-sort"></i></span>';
-			echo '<input type="text" name="link_title[]" value=""  class="regular-text1 code" placeholder="' . __( 'Enter Title', 'source-affix' ) . '" />';
-			echo '<input type="text" name="link_url[]" value=""  class="regular-text code" placeholder="' . __( 'Enter Full URL', 'source-affix' ) . '" />';
+			echo '<input type="text" name="link_title[]" value="" class="regular-text1 code" placeholder="' . esc_attr__( 'Enter Title', 'source-affix' ) . '" />';
+			echo '<input type="text" name="link_url[]" value="" class="regular-text code" placeholder="' . esc_attr__( 'Enter Full URL', 'source-affix' ) . '" />';
 			echo '<span class="btn-remove-source-link"><i class="dashicons dashicons-no-alt"></i></span>';
 			echo '</li>';
 		}
 
 		echo '</ul>';
-		echo '<a href="#" class="button button-primary" id="btn-add-source-link">' . __( 'Add New', 'source-affix' ) . '</a>';
-
-		return;
+		echo '<a href="#" class="button button-primary" id="btn-add-source-link">' . esc_html__( 'Add New', 'source-affix' ) . '</a>';
 	}
 
 	/**
@@ -329,7 +335,7 @@ class Source_Affix_Admin {
 	 * @param int     $post_id Post ID.
 	 * @param WP_Post $post Post object.
 	 */
-	function source_affix_save_sa_source( $post_id, $post ) {
+	public function source_affix_save_sa_source( $post_id, $post ) {
 		// Verify nonce.
 		if ( ! ( isset( $_POST['sa_source_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['sa_source_nonce'] ), plugin_basename( __FILE__ ) ) ) ) {
 			return;
@@ -361,7 +367,7 @@ class Source_Affix_Admin {
 			$sa_source_message = source_affix_convert_array_to_meta( $links_array );
 
 			// If the value for the source message exists, delete it first.
-			if ( 0 == count( get_post_meta( $post_id, 'sa_source' ) ) ) {
+			if ( 0 === count( get_post_meta( $post_id, 'sa_source' ) ) ) {
 				delete_post_meta( $post_id, 'sa_source' );
 			}
 
@@ -378,7 +384,7 @@ class Source_Affix_Admin {
 	 * @param int     $post_id Post ID.
 	 * @param WP_Post $post Post object.
 	 */
-	function source_affix_check_required( $post_id, $post ) {
+	public function source_affix_check_required( $post_id, $post ) {
 		// Verify nonce.
 		if ( ! ( isset( $_POST['sa_source_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['sa_source_nonce'] ), plugin_basename( __FILE__ ) ) ) ) {
 			return;
@@ -397,7 +403,7 @@ class Source_Affix_Admin {
 		$sa_source_posttypes = $this->plugin->get_option( 'sa_source_posttypes' );
 
 		// Bail if not selected post type.
-		if ( ! in_array( get_post_type( $post_id ), $sa_source_posttypes ) ) {
+		if ( ! in_array( get_post_type( $post_id ), $sa_source_posttypes, true ) ) {
 			return;
 		}
 
@@ -419,7 +425,7 @@ class Source_Affix_Admin {
 		// Clean post cache.
 		clean_post_cache( $post->ID );
 
-		// Manage post transition
+		// Manage post transition.
 		$old_status = $post->post_status;
 
 		$post->post_status = 'draft';
@@ -432,9 +438,9 @@ class Source_Affix_Admin {
 	 *
 	 * @since 1.0.0
 	 */
-	function show_admin_notices() {
+	public function show_admin_notices() {
 		// Check if the transient is set, and display the error message.
-		if ( 'no' == get_transient( 'sa_required_check' ) ) {
+		if ( 'no' === get_transient( 'sa_required_check' ) ) {
 			echo '<div id="message" class="error"><p><strong>';
 			echo esc_html__( 'Source is required.', 'source-affix' );
 			echo '</strong></p></div>';

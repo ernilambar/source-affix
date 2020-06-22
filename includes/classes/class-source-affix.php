@@ -40,15 +40,6 @@ class Source_Affix {
 	protected $default_options = array();
 
 	/**
-	 * Plugin options.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var array
-	 */
-	protected $options = array();
-
-	/**
 	 * Instance of this class.
 	 *
 	 * @since 1.0.0
@@ -69,7 +60,7 @@ class Source_Affix {
 		// Load plugin text domain.
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		// Load public-facing assets.
+		// Load public assets.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
 		// Define custom functionality.
@@ -82,7 +73,7 @@ class Source_Affix {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return Plugin slug.
+	 * @return string Plugin slug.
 	 */
 	public function get_plugin_slug() {
 		return $this->plugin_slug;
@@ -93,7 +84,7 @@ class Source_Affix {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return Plugin slug.
+	 * @return array Defaults.
 	 */
 	public function get_defaults() {
 		return $this->default_options;
@@ -167,7 +158,7 @@ class Source_Affix {
 	}
 
 	/**
-	 * Register and enqueue public-facing assets.
+	 * Register and enqueue public assets.
 	 *
 	 * @since 1.0.0
 	 */
@@ -336,7 +327,6 @@ class Source_Affix {
 				<?php if ( ! empty( $args['title'] ) ) : ?>
 					<span class="source-title"><?php echo esc_html( $args['title'] ); ?></span>
 				<?php endif; ?>
-
 				<div class="sa-source-content">
 					<?php echo wp_kses_post( $links_content ); ?>
 				</div><!-- .sa-source-content -->
