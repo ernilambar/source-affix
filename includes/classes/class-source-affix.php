@@ -89,6 +89,17 @@ class Source_Affix {
 	}
 
 	/**
+	 * Return default options.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return Plugin slug.
+	 */
+	public function get_defaults() {
+		return $this->default_options;
+	}
+
+	/**
 	 * Return an instance of this class.
 	 *
 	 * @since 1.0.0

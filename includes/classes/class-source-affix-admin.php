@@ -82,6 +82,8 @@ class Source_Affix_Admin {
 	 * @since 2.0.0
 	 */
 	public function setup_admin_page() {
+		$defaults = $this->plugin->get_defaults();
+
 		$this->optioner->set_page(
 			array(
 				'page_title'  => esc_html__( 'Source Affix', 'source-affix' ),
@@ -107,6 +109,7 @@ class Source_Affix_Admin {
 				'id'      => 'sa_source_posttypes',
 				'type'    => 'multicheck',
 				'title'   => esc_html__( 'Enable Source Affix for', 'source-affix' ),
+				'default' => $defaults['sa_source_posttypes'],
 				'choices' => $this->get_post_types_options(),
 			)
 		);
@@ -118,7 +121,7 @@ class Source_Affix_Admin {
 				'id'      => 'sa_source_title',
 				'type'    => 'text',
 				'title'   => esc_html__( 'Source Title', 'source-affix' ),
-				'default' => esc_html__( 'Source :', 'source-affix' ),
+				'default' => $defaults['sa_source_title'],
 			)
 		);
 
@@ -129,7 +132,7 @@ class Source_Affix_Admin {
 				'id'      => 'sa_source_style',
 				'type'    => 'select',
 				'title'   => esc_html__( 'Source Style', 'source-affix' ),
-				'default' => 'COMMA',
+				'default' => $defaults['sa_source_style'],
 				'choices' => array(
 					'COMMA'       => esc_html__( 'Comma Separated', 'source-affix' ),
 					'LIST'        => esc_html__( 'List', 'source-affix' ),
@@ -145,7 +148,7 @@ class Source_Affix_Admin {
 				'id'      => 'sa_source_open_style',
 				'type'    => 'select',
 				'title'   => esc_html__( 'Open Source Link', 'source-affix' ),
-				'default' => 'BLANK',
+				'default' => $defaults['sa_source_open_style'],
 				'choices' => array(
 					'SELF'  => esc_html__( 'Same Window', 'source-affix' ),
 					'BLANK' => esc_html__( 'New Window', 'source-affix' ),
@@ -160,7 +163,7 @@ class Source_Affix_Admin {
 				'id'      => 'sa_source_position',
 				'type'    => 'select',
 				'title'   => esc_html__( 'Source Position', 'source-affix' ),
-				'default' => 'APPEND',
+				'default' => $defaults['sa_source_position'],
 				'choices' => array(
 					'APPEND'  => esc_html__( 'End of the content', 'source-affix' ),
 					'PREPEND' => esc_html__( 'Beginning of the content', 'source-affix' ),
@@ -176,7 +179,7 @@ class Source_Affix_Admin {
 				'id'      => 'sa_load_plugin_styles',
 				'type'    => 'select',
 				'title'   => esc_html__( 'Load Plugin Styles', 'source-affix' ),
-				'default' => 'YES',
+				'default' => $defaults['sa_load_plugin_styles'],
 				'choices' => array(
 					'YES' => esc_html__( 'Yes', 'source-affix' ),
 					'NO'  => esc_html__( 'No', 'source-affix' ),
@@ -191,7 +194,7 @@ class Source_Affix_Admin {
 				'id'      => 'sa_make_required',
 				'type'    => 'select',
 				'title'   => esc_html__( 'Make Source Required', 'source-affix' ),
-				'default' => 'NO',
+				'default' => $defaults['sa_make_required'],
 				'choices' => array(
 					'YES' => esc_html__( 'Yes', 'source-affix' ),
 					'NO'  => esc_html__( 'No', 'source-affix' ),
