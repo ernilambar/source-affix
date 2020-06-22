@@ -32,6 +32,26 @@ var deploy_files_list = [
 	pkg.main_file
 ];
 
+gulp.task('style', () => {
+  const postcss = require('gulp-postcss');
+  const sourcemaps = require('gulp-sourcemaps');
+  const postcssImport = require('postcss-import');
+  const precss = require('precss');
+  const autoprefixer = require('autoprefixer');
+  const cssnano = require('cssnano');
+  return gulp
+    .src('src/styles/*.css')
+    .pipe(sourcemaps.init())
+    .pipe(postcss([
+      postcssImport(),
+      precss(),
+      autoprefixer('last 4 version'),
+      cssnano(),
+    ]))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('assets/css/'));
+});
+
 // Watch.
 gulp.task( 'watch', function() {
     browserSync.init({
@@ -40,7 +60,7 @@ gulp.task( 'watch', function() {
     });
 
     // Watch CSS files.
-    gulp.watch( rootPath + '**/**/*.css' ).on('change',browserSync.reload);
+    gulp.watch( rootPath + 'src/styles/**/**/*.css' ).on('change',browserSync.reload);
 
     // Watch PHP files.
     gulp.watch( rootPath + '**/**/*.php' ).on('change',browserSync.reload);
