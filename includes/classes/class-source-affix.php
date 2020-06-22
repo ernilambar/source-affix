@@ -233,6 +233,39 @@ class Source_Affix {
 		return $output;
 	}
 
+	public function get_source_links_markup( $links, $type = 'COMMA' ) {
+		if ( ! is_array( $links ) || empty( $links ) ) {
+			return;
+		}
+
+		$html = '';
+
+		switch ( $type ) {
+			case 'COMMA':
+				$html .= '<div class="news-source">' . implode( ', ', $links ) . '</div>';
+				break;
+
+			case 'LIST':
+				$html .= '<ul class="list-source-links">';
+				$html .= '<li>' . implode( '</li><li>', $links ) . '</li>';
+				$html .= '</ul>';
+
+				break;
+
+			case 'ORDEREDLIST':
+				$html .= '<ol class="list-source-links">';
+				$html .= '<li>' . implode( '</li><li>', $links ) . '</li>';
+				$html .= '</ol>';
+
+				break;
+
+			default:
+				break;
+		}
+
+		return $html;
+	}
+
 	/**
 	 * Affix source to the content.
 	 *
