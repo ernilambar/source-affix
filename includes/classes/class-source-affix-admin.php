@@ -53,9 +53,8 @@ class Source_Affix_Admin {
 
 		$this->optioner = new Optioner();
 
-		// Load admin style sheet and JavaScript.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		// Load admin assets.
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( __FILE__ ) . 'source-affix.php' );
@@ -230,54 +229,37 @@ class Source_Affix_Admin {
 	}
 
 	/**
-	 * Register and enqueue admin-specific style sheet.
+	 * Enqueue admin assets.
 	 *
-	 * @since     1.0.0
-	 *
-	 * @return    null    Return early if no settings page is registered.
+	 * @since 1.0.0
 	 */
-	public function enqueue_admin_styles() {
+	public function enqueue_assets() {
 		$screen = get_current_screen();
 
 		$sa_source_posttypes = $this->plugin->get_option( 'sa_source_posttypes' );
 
 		if ( in_array( $screen->id, $sa_source_posttypes, true ) ) {
-			wp_enqueue_style( 'source-affix-admin-styles', plugins_url( 'css/admin.css', __FILE__ ), array(), Source_Affix::VERSION );
-		}
-	}
+			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-	/**
-	 * Register and enqueue admin-specific JavaScript.
-	 *
-	 * @since     1.0.0
-	 *
-	 * @return    null    Return early if no settings page is registered.
-	 */
-	public function enqueue_admin_scripts() {
-		$screen = get_current_screen();
-
-		$sa_source_posttypes = $this->plugin->get_option( 'sa_source_posttypes' );
-
-		if ( in_array( $screen->id, $sa_source_posttypes, true ) ) {
+			wp_enqueue_style( 'source-affix-admin-styles', SOURCE_AFFIX_URL . '/assets/css/admin' . $min . '.css', array(), Source_Affix::VERSION );
 
 			$extra_array = array(
 				'lang' => array(
-					'are_you_sure'   => __( 'Are you sure?', 'source-affix' ),
-					'enter_title'    => __( 'Enter Title', 'source-affix' ),
-					'enter_full_url' => __( 'Enter Full URL', 'source-affix' ),
+					'are_you_sure'   => esc_html__( 'Are you sure?', 'source-affix' ),
+					'enter_title'    => esc_html__( 'Enter Title', 'source-affix' ),
+					'enter_full_url' => esc_html__( 'Enter Full URL', 'source-affix' ),
 				),
 			);
 
-			wp_register_script( 'source-affix-admin-script', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-sortable' ), Source_Affix::VERSION );
+			wp_enqueue_script( 'source-affix-admin-script', SOURCE_AFFIX_URL . '/assets/js/admin' . $min . '.js', array( 'jquery', 'jquery-ui-sortable' ), Source_Affix::VERSION );
 			wp_localize_script( 'source-affix-admin-script', 'SAF_OBJ', $extra_array );
-			wp_enqueue_script( 'source-affix-admin-script' );
 		}
 	}
 
 	/**
 	 * Add settings action link to the plugins page.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function source_affix_add_action_links( $links ) {
 		return array_merge(
@@ -292,16 +274,10 @@ class Source_Affix_Admin {
 	 * Adds the meta box below the post content editor on the post edit dashboard.
 	 */
 	function source_affix_add_sa_metabox() {
-		$options = $this->options;
+		$sa_source_posttypes = $this->plugin->get_option( 'sa_source_posttypes' );
 
-		if ( $options ) {
-			extract( $options );
-		}
-
-		$available_post_types_array = array_keys( $sa_source_posttypes );
-
-		if ( ! empty( $available_post_types_array ) ) {
-			foreach ( $available_post_types_array as $ptype ) {
+		if ( ! empty( $sa_source_posttypes ) ) {
+			foreach ( $sa_source_posttypes as $ptype ) {
 				add_meta_box('sa_source', esc_html__( 'Sources', 'source-affix' ), array( $this, 'source_affix_sa_source_display' ), $ptype, 'normal', 'high');
 			}
 		}

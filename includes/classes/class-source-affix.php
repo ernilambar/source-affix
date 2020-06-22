@@ -72,9 +72,6 @@ class Source_Affix {
 		// Load public-facing assets.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
-		// nsdump( $this->get_option('sa_source_posttypes') );
-		// nsdump( $this->get_option('sa_source_title') );
-
 		// Define custom functionality.
 		add_filter( 'the_content', array( $this, 'source_affix_affix_sa_source' ) );
 		add_shortcode( 'source_affix', array( $this, 'render_source_affix_content' ) );
@@ -167,7 +164,9 @@ class Source_Affix {
 		$sa_load_plugin_styles = $this->get_option( 'sa_load_plugin_styles' );
 
 		if ( 'YES' === $sa_load_plugin_styles ) {
-			wp_enqueue_style( 'source-affix-plugin-styles', SOURCE_AFFIX_URL . '/css/public.css', array(), self::VERSION );
+			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+			wp_enqueue_style( 'source-affix-plugin-styles', SOURCE_AFFIX_URL . '/assets/css/public' . $min . '.css', array(), self::VERSION );
 		}
 	}
 
