@@ -181,6 +181,58 @@ class Source_Affix {
 		}
 	}
 
+	public function get_post_source_details( $post_id ) {
+		$output = array();
+
+		$sa_source = get_post_meta( $post_id, 'sa_source', true );
+
+		if ( $sa_source ) {
+			$links_array = source_affix_convert_meta_to_array( $sa_source );
+
+			if ( ! empty( $links_array ) ) {
+				$output = $links_array;
+			}
+		}
+
+		return $output;
+	}
+
+	public function get_post_source_links( $post_id, $args = array() ) {
+		$output = array();
+
+		$defaults = array(
+			'new_window' => false,
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$links = $this->get_post_source_details( $post_id );
+
+		if ( ! empty( $links ) ) {
+			foreach ( $links as $link ) {
+				$item = '';
+
+				if ( ! empty( $link['title'] ) ) {
+					if ( isset( $link['url'] ) && ! empty( $link['url'] ) ) {
+						$target_string = '';
+
+						if ( true === $args['new_window'] ) {
+							$target_string .= ' target="_blank"';
+						}
+
+						$item .= '<a href="' . esc_url( $item['url'] ) . '"' . ( $target_string ? $target_string : '' ) . '>' . esc_html( $item['title'] ) . '</a>';
+					} else {
+						$item .= esc_html( $item['title'] );
+					}
+				}
+
+				$output[] = $item;
+			}
+		}
+
+		return $output;
+	}
+
 	/**
 	 * Affix source to the content.
 	 *
@@ -188,6 +240,9 @@ class Source_Affix {
 	 * @return The content with affixed source.
 	 */
 	function source_affix_affix_sa_source( $content ) {
+
+		$this->get_post_source_details( get_the_ID() );
+
 		$sa_source_posttypes = $this->get_option( 'sa_source_posttypes' );
 
 		$current_post_type = get_post_type( get_the_ID() );
