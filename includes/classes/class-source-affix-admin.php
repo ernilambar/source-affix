@@ -21,15 +21,6 @@ class Source_Affix_Admin {
 	protected static $instance = null;
 
 	/**
-	 * Plugin options.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var array
-	 */
-	protected $options = array();
-
-	/**
 	 * Optioner instance.
 	 *
 	 * @since 2.0.0
@@ -38,6 +29,13 @@ class Source_Affix_Admin {
 	 */
 	protected $optioner;
 
+	/**
+	 * Main plugin instance.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var object
+	 */
 	protected $plugin;
 
 	/**
@@ -56,9 +54,9 @@ class Source_Affix_Admin {
 		// Load admin assets.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
-		// Add an action link pointing to the options page.
-		$plugin_basename = plugin_basename( plugin_dir_path( __FILE__ ) . 'source-affix.php' );
-		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'source_affix_add_action_links' ) );
+		// Add an setting page link.
+		$base_file = $this->plugin_slug . '/' . $this->plugin_slug . '.php';
+		add_filter( 'plugin_action_links_' . $base_file, array( $this, 'source_affix_add_action_links' ) );
 
 		// Add the post meta box to the post editor.
 		add_action( 'add_meta_boxes', array( $this, 'source_affix_add_sa_metabox' ) );
@@ -396,15 +394,10 @@ class Source_Affix_Admin {
 			return;
 		}
 
-		// Field option.
-		$post_types = array();
-
-		if ( isset( $this->options['sa_source_posttypes'] ) ) {
-			$post_types = array_keys( $this->options['sa_source_posttypes'] );
-		}
+		$sa_source_posttypes = $this->plugin->get_option( 'sa_source_posttypes' );
 
 		// Bail if not selected post type.
-		if ( ! in_array( get_post_type( $post_id ), $post_types ) ) {
+		if ( ! in_array( get_post_type( $post_id ), $sa_source_posttypes ) ) {
 			return;
 		}
 
