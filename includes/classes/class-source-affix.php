@@ -64,7 +64,7 @@ class Source_Affix {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
 		// Define custom functionality.
-		add_filter( 'the_content', array( $this, 'source_affix_affix_sa_source' ) );
+		add_filter( 'the_content', array( $this, 'append_sa_source' ) );
 		add_shortcode( 'source_affix', array( $this, 'render_source_affix_content' ) );
 	}
 
@@ -346,7 +346,7 @@ class Source_Affix {
 	 * @param string $content The content.
 	 * @return string The content with affixed source.
 	 */
-	public function source_affix_affix_sa_source( $content ) {
+	public function append_sa_source( $content ) {
 		// Check if we're inside the main loop in a single post.
 		if ( is_singular() && in_the_loop() && is_main_query() ) {
 			$sa_source_position = $this->get_option( 'sa_source_position' );
@@ -397,92 +397,24 @@ class Source_Affix {
 			'new_window' => true,
 		);
 
-		$options = shortcode_atts( $defaults, $atts );
+		$atts = shortcode_atts( $defaults, $atts );
 
-		if ( ! $options['id'] ) {
+		if ( ! $atts['id'] ) {
 			if ( is_singular() ) {
-				$options['id'] = get_the_ID();
+				$atts['id'] = get_the_ID();
 			}
 		}
 
-		if ( 0 === absint( $options['id'] ) ) {
+		if ( 0 === absint( $atts['id'] ) ) {
 			return;
 		}
 
-		$sa_source = get_post_meta( $options['id'], 'sa_source', true );
+		$params = array(
+			'title'      => $atts['title'],
+			'style'      => strtoupper( $atts['style'] ),
+			'new_window' => rest_sanitize_boolean( $atts['new_window'] ),
+		);
 
-		$links_array = array();
-
-		if ( ! empty( $sa_source ) ) {
-			$links_array = source_affix_convert_meta_to_array( $sa_source );
-		}
-
-		if ( empty( $links_array ) ) {
-			return;
-		}
-
-		ob_start();
-
-		echo '<div class="sa-source-wrapper">';
-		echo '<div class="sa-source-inner">';
-
-		if ( ! empty( $options['title'] ) ) {
-			echo '<span class="source-title">' . esc_html( $options['title'] ) . '</span>';
-		}
-
-		$single_link = array();
-
-		if ( ! empty( $links_array ) && is_array( $links_array ) ) {
-			foreach ( $links_array as $key => $eachline ) {
-				if ( ! empty( $eachline['url'] ) ) {
-					$lnk  = '<a href="' . esc_url( $eachline['url'] ) . '" ';
-					$lnk .= ( true === $options['new_window'] ) ? ' target="_blank" ' : '';
-					$lnk .= ' >' . esc_html( $eachline['title'] ) . '</a>';
-				} else {
-					$lnk = esc_attr( $eachline['title'] );
-				}
-
-				$single_link[] = $lnk;
-			}
-		}
-
-		$source_message = '';
-
-		switch ( $options['style'] ) {
-			case 'comma':
-				$source_message .= '<div class="news-source">' . implode( ', ', $single_link ) . '</div>';
-				break;
-
-			case 'list':
-				if ( ! empty( $single_link ) ) {
-					$source_message .= '<ul class="list-source-links">';
-					$source_message .= '<li>' . implode( '</li><li>', $single_link ) . '</li>';
-					$source_message .= '</ul>';
-				}
-
-				break;
-
-			case 'orderedlist':
-				if ( ! empty( $single_link ) ) {
-					$source_message .= '<ol class="list-source-links">';
-					$source_message .= '<li>' . implode( '</li><li>', $single_link ) . '</li>';
-					$source_message .= '</ol>';
-				}
-
-				break;
-
-			default:
-				break;
-		}
-
-		echo '<div class="sa-source-content">';
-
-		echo $source_message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
-		echo '</div>';
-		echo '</div>';
-		echo '</div>';
-
-		return ob_get_clean();
+		return $this->get_source_content_markup( $atts['id'], $params );
 	}
 }
