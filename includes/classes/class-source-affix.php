@@ -181,6 +181,14 @@ class Source_Affix {
 		}
 	}
 
+	/**
+	 * Get source links details.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param int $post_id Post ID.
+	 * @return array Links details.
+	 */
 	public function get_post_source_details( $post_id ) {
 		$output = array();
 
@@ -197,6 +205,15 @@ class Source_Affix {
 		return $output;
 	}
 
+	/**
+	 * Get post source links.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param int   $post_id Post ID.
+	 * @param array $args Arguments.
+	 * @return array Links.
+	 */
 	public function get_post_source_links( $post_id, $args = array() ) {
 		$output = array();
 
@@ -233,6 +250,15 @@ class Source_Affix {
 		return $output;
 	}
 
+	/**
+	 * Get source links markup.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param int   $post_id Post ID.
+	 * @param array $args Arguments.
+	 * @return string Content.
+	 */
 	public function get_source_links_markup( $post_id, $args = array() ) {
 		$defaults = array(
 			'style'      => 'COMMA',
@@ -277,6 +303,15 @@ class Source_Affix {
 		return $html;
 	}
 
+	/**
+	 * Get source content markup.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param int   $post_id Post ID.
+	 * @param array $args Arguments.
+	 * @return string Content.
+	 */
 	public function get_source_content_markup( $post_id, $args = array() ) {
 		$html = '';
 
@@ -316,10 +351,12 @@ class Source_Affix {
 	/**
 	 * Affix source to the content.
 	 *
-	 * @param  $content The content.
-	 * @return The content with affixed source.
+	 * @since 1.0.0
+	 *
+	 * @param string $content The content.
+	 * @return string The content with affixed source.
 	 */
-	function source_affix_affix_sa_source( $content ) {
+	public function source_affix_affix_sa_source( $content ) {
 		// Check if we're inside the main loop in a single post.
 		if ( is_singular() && in_the_loop() && is_main_query() ) {
 			$sa_source_position = $this->get_option( 'sa_source_position' );
@@ -354,6 +391,14 @@ class Source_Affix {
 		return $content;
 	}
 
+	/**
+	 * Shortcode callback.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $atts Parameters.
+	 * @return string Shortcode output.
+	 */
 	public function render_source_affix_content( $atts ) {
 		$defaults = array(
 			'id'         => null,
@@ -442,7 +487,7 @@ class Source_Affix {
 
 		echo '<div class="sa-source-content">';
 
-		echo $source_message;
+		echo $source_message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		echo '</div>';
 		echo '</div>';
