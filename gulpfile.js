@@ -35,19 +35,24 @@ var deploy_files_list = [
 // Style.
 gulp.task('style', () => {
   const postcss = require('gulp-postcss');
+  const sourcemaps = require('gulp-sourcemaps');
   const postcssImport = require('postcss-import');
   const precss = require('precss');
   const autoprefixer = require('autoprefixer');
   const cssnano = require('cssnano');
   const rename = require('gulp-rename');
+  const filter = require('gulp-filter');
   return gulp
     .src('src/styles/*.css')
+    .pipe(sourcemaps.init())
     .pipe(postcss([
       postcssImport(),
       precss(),
       autoprefixer('last 4 version')
     ]))
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('assets/css/'))
+    .pipe(filter('**/*.css'))
     .pipe(postcss([
       cssnano()
     ]))
