@@ -7,14 +7,13 @@ project.properties
 .settings*
 .idea
 
-# Grunt
+# Node
 /node_modules/
 /deploy/
-/build/
 /vendor/
 
-# Docs
-/docs/
+# Environmanet
+.env
 
 # Sass
 .sass-cache/
