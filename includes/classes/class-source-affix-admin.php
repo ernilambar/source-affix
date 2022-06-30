@@ -493,24 +493,40 @@ class Source_Affix_Admin {
 					<li><strong>Questions, bugs or great ideas?</strong></li>
 					<li><a href="https://wordpress.org/support/plugin/source-affix/" target="_blank">Visit plugin support page</a></li>
 					<li><strong>Wanna help make this plugin better?</strong></li>
-					<li><a href="https://wordpress.org/support/plugin/source-affix/reviews/" target="_blank">Review and rate this plugin on WordPress.org</a></li>
+					<li><a href="https://wordpress.org/support/plugin/source-affix/reviews/#new-post" target="_blank">Review and rate this plugin on WordPress.org</a></li>
 				</ul>
 			</div>
 		</div><!-- .sidebox -->
+
 		<div class="sidebox">
-			<h3 class="box-heading">My Blog</h3>
+			<h3 class="box-heading">Recommended Plugins</h3>
+			<div class="box-content">
+				<ol>
+					<li><a href="https://wpconcern.com/plugins/woocommerce-product-tabs/" target="_blank">WooCommerce Product Tabs</a></li>
+					<li><a href="https://wpconcern.com/plugins/post-grid-elementor-addon/" target="_blank">Post Grid Elementor Addon</a></li>
+					<li><a href="https://wpconcern.com/plugins/advanced-google-recaptcha/" target="_blank">Advanced Google reCAPTCHA</a></li>
+					<li><a href="https://wordpress.org/plugins/nifty-coming-soon-and-under-construction-page/" target="_blank">Coming Soon & Maintenance Mode Page</a></li>
+					<li><a href="https://wordpress.org/plugins/admin-customizer/" target="_blank">Admin Customizer</a></li>
+					<li><a href="https://wordpress.org/plugins/prime-addons-for-elementor/" target="_blank">Prime Addons for Elementor</a></li>
+				</ol>
+			</div>
+		</div><!-- .sidebox -->
+
+		<div class="sidebox">
+			<h3 class="box-heading">Recent Blog Posts</h3>
 			<div class="box-content">
 				<?php $rss_items = $this->get_feed_items(); ?>
 
 				<?php if ( ! empty( $rss_items ) ) : ?>
-					<ul>
+					<ol>
 						<?php foreach ( $rss_items as $item ) : ?>
 							<li><a href="<?php echo esc_url( $item['url'] ); ?>" target="_blank"><?php echo esc_html( $item['title'] ); ?></a></li>
 						<?php endforeach; ?>
-					</ul>
+						</ol>
 				<?php endif; ?>
 			</div>
 		</div><!-- .sidebox -->
+
 		<?php
 	}
 
