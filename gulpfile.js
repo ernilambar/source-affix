@@ -1,14 +1,14 @@
 // Env.
-require('dotenv').config()
+require('dotenv').config();
 
 // Config.
 var rootPath = './';
 
 // Gulp.
-var gulp = require( 'gulp' );
+var gulp = require('gulp');
 
 // Gulp plugins.
-var gulpPlugins = require( 'gulp-load-plugins' )();
+var gulpPlugins = require('gulp-load-plugins')();
 
 // File system.
 var fs = require('fs');
@@ -34,7 +34,7 @@ var deploy_files_list = [
 
 // SASS.
 gulp.task('scss', function () {
-    const { autoprefixer, cleanCss, notify, plumber, sass, sassGlob, uglify, rename, sourcemaps, filter } = gulpPlugins;
+    const { autoprefixer, cleanCss, plumber, sass, sassGlob, rename, sourcemaps, filter } = gulpPlugins;
     return gulp.src(rootPath + 'src/sass/*.scss')
         .on('error', sass.logError)
         .pipe(sourcemaps.init())
@@ -72,13 +72,13 @@ gulp.task( 'watch', function() {
     });
 
     // Watch SASS files.
-    gulp.watch( rootPath + 'src/sass/**/**/*.scss', gulp.series( 'scss' ) ).on('change',browserSync.reload);
+    gulp.watch(rootPath + 'src/sass/**/**/*.scss', gulp.series( 'scss' )).on('change',browserSync.reload);
 
     // Watch JS files.
-    gulp.watch( rootPath + 'src/scripts/**/**/*.js', gulp.series( 'scripts' ) ).on('change',browserSync.reload);
+    gulp.watch(rootPath + 'src/scripts/**/**/*.js', gulp.series( 'scripts' )).on('change',browserSync.reload);
 
     // Watch PHP files.
-    gulp.watch( rootPath + '**/**/*.php' ).on('change',browserSync.reload);
+    gulp.watch(rootPath + '**/**/*.php').on('change',browserSync.reload);
 });
 
 // Clean deploy folder.
@@ -89,7 +89,7 @@ gulp.task('clean:deploy', function() {
 // Copy to deploy folder.
 gulp.task('copy:deploy', function() {
 	const { zip } = gulpPlugins;
-	return gulp.src(deploy_files_list,{base:'.'})
+	return gulp.src(deploy_files_list, { base: '.' })
 	    .pipe(gulp.dest('deploy/' + pkg.name))
 	    .pipe(zip(pkg.name + '.zip'))
 	    .pipe(gulp.dest('deploy'))
