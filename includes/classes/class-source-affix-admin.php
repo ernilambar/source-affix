@@ -71,6 +71,9 @@ class Source_Affix_Admin {
 
 		// Setup admin page.
 		add_action( 'init', array( $this, 'setup_admin_page' ) );
+
+		// Add admin notice.
+		add_action( 'admin_init', array( $this, 'setup_custom_notice' ) );
 	}
 
 	/**
@@ -544,6 +547,16 @@ class Source_Affix_Admin {
 		}
 
 		return $output;
+	}
+
+	public function setup_custom_notice() {
+		// Setup notice.
+		\Nilambar\AdminNotice\Notice::init(
+			array(
+				'slug' => SOURCE_AFFIX_SLUG,
+				'name' => esc_html__( 'Source Affix', 'source-affix' ),
+			)
+		);
 	}
 
 	/**

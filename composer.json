@@ -13,6 +13,7 @@
     }
   ],
   "require": {
-    "ernilambar/optioner": "^1.0.9"
+    "ernilambar/optioner": "^1.0.9",
+    "ernilambar/wp-admin-notice": "^1.0"
   }
 }
