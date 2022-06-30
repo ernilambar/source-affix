@@ -19,7 +19,7 @@ class Source_Affix {
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.1';
+	const VERSION = SOURCE_AFFIX_VERSION;
 
 	/**
 	 * Plugin slug.

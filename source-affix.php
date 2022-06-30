@@ -5,7 +5,7 @@
  * Plugin Name: Source Affix
  * Plugin URI: https://www.nilambar.net/2013/10/source-affix-wordpress-plugin.html
  * Description: Plugin to add sources in your posts, pages or custom post types
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author: Nilambar Sharma
  * Author URI: https://www.nilambar.net
  * Text Domain: source-affix
@@ -20,6 +20,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+define( 'SOURCE_AFFIX_VERSION', '2.0.2' );
+define( 'SOURCE_AFFIX_SLUG', 'source-affix' );
 define( 'SOURCE_AFFIX_BASENAME', basename( dirname( __FILE__ ) ) );
 define( 'SOURCE_AFFIX_DIR', rtrim( plugin_dir_path( __FILE__ ), '/' ) );
 define( 'SOURCE_AFFIX_URL', rtrim( plugin_dir_url( __FILE__ ), '/' ) );
