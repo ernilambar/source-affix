@@ -10,6 +10,7 @@
 		"build": "gulp build",
 		"deploy": "gulp deploy",
 		"version": "grunt version",
+		"prewpdeploy": "npm run deploy",
 		"pot": "npm run textdomain && npm run language",
 		"language": "wpi18n makepot --domain-path=languages --exclude=vendor,deploy,node_modules",
 		"textdomain": "wpi18n addtextdomain --exclude=vendor,deploy,node_modules",

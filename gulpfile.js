@@ -19,6 +19,9 @@ var pkg = JSON.parse(fs.readFileSync('./package.json'));
 // Delete.
 var del = require('del');
 
+// SASS.
+var sass = require('gulp-sass')(require('sass'));
+
 // Browser sync.
 var browserSync = require('browser-sync').create();
 
@@ -34,7 +37,7 @@ var deploy_files_list = [
 
 // SASS.
 gulp.task('scss', function () {
-    const { autoprefixer, cleanCss, plumber, sass, sassGlob, rename, sourcemaps, filter } = gulpPlugins;
+    const { autoprefixer, cleanCss, plumber, sassGlob, rename, sourcemaps, filter } = gulpPlugins;
     return gulp.src(rootPath + 'src/sass/*.scss')
         .on('error', sass.logError)
         .pipe(sourcemaps.init())
