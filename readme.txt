@@ -3,7 +3,7 @@
 Contributors: rabmalin
 Donate link: https://www.nilambar.net/2013/10/source-affix-wordpress-plugin.html
 Tags: post, source, metabox, custom, posts, custom post type, meta, plugin,
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 Requires PHP: 5.6
 Requires at least: 4.9
 Tested up to: 6.0
@@ -44,6 +44,9 @@ Nice, make a post on the [Support Forum](http://wordpress.org/support/plugin/sou
 3. Sample view of source in front end
 
 == Changelog ==
+
+= 2.0.3 - 21 Sep 2022 =
+* Minor bug fixes
 
 = 2.0.2 - 30 Jun 2022 =
 * Minor bug fixes
