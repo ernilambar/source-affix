@@ -27,8 +27,10 @@ define( 'SOURCE_AFFIX_DIR', rtrim( plugin_dir_path( __FILE__ ), '/' ) );
 define( 'SOURCE_AFFIX_URL', rtrim( plugin_dir_url( __FILE__ ), '/' ) );
 
 // Init autoload.
-require_once SOURCE_AFFIX_DIR . '/vendor/autoload.php';
-require_once SOURCE_AFFIX_DIR . '/vendor/ernilambar/optioner/optioner.php';
+if ( file_exists( SOURCE_AFFIX_DIR . '/vendor/autoload.php' ) ) {
+	require_once SOURCE_AFFIX_DIR . '/vendor/autoload.php';
+	require_once SOURCE_AFFIX_DIR . '/vendor/ernilambar/optioner/optioner.php';
+}
 
 // Load helper.
 require_once SOURCE_AFFIX_DIR . '/includes/helpers/helper.php';

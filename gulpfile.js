@@ -7,46 +7,56 @@ var rootPath = './';
 // Gulp.
 var gulp = require('gulp');
 
-// Gulp plugins.
-var gulpPlugins = require('gulp-load-plugins')();
+// Babel.
+const babel = require( 'gulp-babel' );
+
+// Rename.
+const rename = require( 'gulp-rename' );
+
+// Uglify.
+const uglify = require( 'gulp-uglify' );
 
 // SASS.
 var sass = require('gulp-sass')(require('sass'));
 
+
+// Plumber.
+const plumber = require( 'gulp-plumber' );
+
 // Browser sync.
 var browserSync = require('browser-sync').create();
 
+
+// Autoprefixer.
+const autoprefixer = require( 'gulp-autoprefixer' );
+
+// Clean CSS.
+const cleanCSS = require( 'gulp-clean-css' );
+
 // SASS.
-gulp.task('scss', function () {
-    const { autoprefixer, cleanCss, plumber, sassGlob, rename, sourcemaps, filter } = gulpPlugins;
-    return gulp.src(rootPath + 'src/sass/*.scss')
-        .on('error', sass.logError)
-        .pipe(sourcemaps.init())
-        .pipe(plumber())
-        .pipe(sassGlob())
-        .pipe(sass())
-        .pipe(autoprefixer('last 4 version'))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('assets/css'))
-        .pipe(filter('**/*.css'))
-        .pipe(cleanCss())
-        .pipe(rename({ extname: '.min.css' }))
-        .pipe(gulp.dest('assets/css'))
-});
+gulp.task( 'scss', function() {
+	return gulp.src( rootPath + 'src/sass/*.scss' )
+		.on( 'error', sass.logError )
+		.pipe( plumber() )
+		.pipe( sass() )
+		.pipe( autoprefixer() )
+		.pipe( gulp.dest( 'assets/css' ) )
+		.pipe( cleanCSS() )
+		.pipe( rename( { extname: '.min.css' } ) )
+		.pipe( gulp.dest( 'assets/css' ) );
+} );
 
 // Scripts.
-gulp.task('scripts', function() {
-    const { plumber, rename, uglify, jshint } = gulpPlugins;
-    return gulp.src( [rootPath + 'src/scripts/*.js'] )
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
-        .pipe(jshint.reporter('fail'))
-        .pipe(plumber())
-        .pipe(gulp.dest('assets/js'))
-        .pipe(rename({suffix: '.min'}))
-        .pipe(uglify())
-        .pipe(gulp.dest('assets/js'))
-});
+gulp.task( 'scripts', function() {
+	return gulp.src( [ rootPath + 'src/scripts/*.js' ] )
+		.pipe( babel( {
+			presets: [ '@babel/env' ],
+		} ) )
+		.pipe( gulp.dest( 'assets/js' ) )
+		.pipe( rename( { suffix: '.min' } ) )
+		.pipe( uglify() )
+		.pipe( gulp.dest( 'assets/js' ) );
+} );
 
 // Watch.
 gulp.task( 'watch', function() {
