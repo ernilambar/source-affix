@@ -48,8 +48,6 @@ class Source_Affix_Admin {
 
 		$this->plugin_slug = $this->plugin->get_plugin_slug();
 
-		$this->optioner = new Optioner();
-
 		// Load admin assets.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
@@ -70,7 +68,7 @@ class Source_Affix_Admin {
 		add_action( 'admin_notices', array( $this, 'show_admin_notices' ) );
 
 		// Setup admin page.
-		add_action( 'init', array( $this, 'setup_admin_page' ) );
+		add_action( 'optioner_admin_init', array( $this, 'setup_admin_page' ) );
 
 		// Add admin notice.
 		add_action( 'admin_init', array( $this, 'setup_custom_notice' ) );
@@ -82,6 +80,8 @@ class Source_Affix_Admin {
 	 * @since 2.0.0
 	 */
 	public function setup_admin_page() {
+		$this->optioner = new Optioner();
+
 		$defaults = $this->plugin->get_defaults();
 
 		$this->optioner->set_page(
@@ -487,34 +487,33 @@ class Source_Affix_Admin {
 	public function render_sidebar() {
 		?>
 		<div class="sidebox">
-			<h3 class="box-heading">Help &amp; Support</h3>
-			<div class="box-content">
-				<ul>
-					<li><strong>Questions, bugs or great ideas?</strong></li>
-					<li><a href="https://wordpress.org/support/plugin/source-affix/" target="_blank">Visit plugin support page</a></li>
-					<li><strong>Wanna help make this plugin better?</strong></li>
-					<li><a href="https://wordpress.org/support/plugin/source-affix/reviews/#new-post" target="_blank">Review and rate this plugin on WordPress.org</a></li>
-				</ul>
+			<h3 class="sidebox-heading">Help &amp; Support</h3>
+			<div class="sidebox-content">
+				<p><strong>Questions, bugs or great ideas?</strong></p>
+				<p><a href="https://wordpress.org/support/plugin/source-affix/#new-post" target="_blank">Visit plugin support page</a></p>
+				<p><strong>Wanna help make this plugin better?</strong></p>
+				<p><a href="https://wordpress.org/support/plugin/source-affix/reviews/#new-post" target="_blank">Review and rate this plugin on WordPress.org</a></p>
 			</div>
 		</div><!-- .sidebox -->
 
 		<div class="sidebox">
-			<h3 class="box-heading">Recommended Plugins</h3>
-			<div class="box-content">
+			<h3 class="sidebox-heading">Recommended Plugins</h3>
+			<div class="sidebox-content">
 				<ol>
 					<li><a href="https://wpconcern.com/plugins/woocommerce-product-tabs/" target="_blank">WooCommerce Product Tabs</a></li>
+					<li><a href="https://wpconcern.com/plugins/nifty-coming-soon-and-under-construction-page/" target="_blank">Coming Soon & Maintenance Mode Page</a></li>
 					<li><a href="https://wpconcern.com/plugins/post-grid-elementor-addon/" target="_blank">Post Grid Elementor Addon</a></li>
 					<li><a href="https://wpconcern.com/plugins/advanced-google-recaptcha/" target="_blank">Advanced Google reCAPTCHA</a></li>
-					<li><a href="https://wordpress.org/plugins/nifty-coming-soon-and-under-construction-page/" target="_blank">Coming Soon & Maintenance Mode Page</a></li>
-					<li><a href="https://wordpress.org/plugins/admin-customizer/" target="_blank">Admin Customizer</a></li>
+					<li><a href="https://wpconcern.com/plugins/majestic-before-after-image/" target="_blank">Majestic Before After Image</a></li>
+					<li><a href="https://wpconcern.com/plugins/admin-customizer/" target="_blank">Admin Customizer</a></li>
 					<li><a href="https://wordpress.org/plugins/prime-addons-for-elementor/" target="_blank">Prime Addons for Elementor</a></li>
 				</ol>
 			</div>
 		</div><!-- .sidebox -->
 
 		<div class="sidebox">
-			<h3 class="box-heading">Recent Blog Posts</h3>
-			<div class="box-content">
+			<h3 class="sidebox-heading">Recent Blog Posts</h3>
+			<div class="sidebox-content">
 				<?php $rss_items = $this->get_feed_items(); ?>
 
 				<?php if ( ! empty( $rss_items ) ) : ?>
