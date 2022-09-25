@@ -19,7 +19,6 @@ const uglify = require( 'gulp-uglify' );
 // SASS.
 var sass = require('gulp-sass')(require('sass'));
 
-
 // Plumber.
 const plumber = require( 'gulp-plumber' );
 

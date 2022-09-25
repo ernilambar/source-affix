@@ -50,6 +50,7 @@ class Source_Affix_Admin {
 
 		// Load admin assets.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_blog_posts_assets' ) );
 
 		// Add an setting page link.
 		$base_file = $this->plugin_slug . '/' . $this->plugin_slug . '.php';
@@ -72,6 +73,9 @@ class Source_Affix_Admin {
 
 		// Add admin notice.
 		add_action( 'admin_init', array( $this, 'setup_custom_notice' ) );
+
+		add_action( 'wp_ajax_nopriv_sa_nsbl_get_posts', array( $this, 'get_posts_ajax_callback' ) );
+		add_action( 'wp_ajax_sa_nsbl_get_posts', array( $this, 'get_posts_ajax_callback' ) );
 	}
 
 	/**
@@ -206,7 +210,6 @@ class Source_Affix_Admin {
 		$this->optioner->set_sidebar(
 			array(
 				'render_callback' => array( $this, 'render_sidebar' ),
-				'width'           => 30,
 			)
 		);
 
@@ -238,7 +241,7 @@ class Source_Affix_Admin {
 	public function enqueue_assets() {
 		$screen = get_current_screen();
 
-		$sa_source_posttypes = $this->plugin->get_option( 'sa_source_posttypes' );
+		$sa_source_posttypes = (array) $this->plugin->get_option( 'sa_source_posttypes' );
 
 		if ( in_array( $screen->id, $sa_source_posttypes, true ) ) {
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
@@ -256,6 +259,19 @@ class Source_Affix_Admin {
 			wp_enqueue_script( 'source-affix-admin-script', SOURCE_AFFIX_URL . '/assets/js/admin' . $min . '.js', array( 'jquery', 'jquery-ui-sortable' ), Source_Affix::VERSION, true );
 			wp_localize_script( 'source-affix-admin-script', 'SAF_OBJ', $extra_array );
 		}
+	}
+
+	/**
+	 * Enqueue blog posts.
+	 *
+	 * @since 1.0.0
+	 */
+	public function load_blog_posts_assets( $hook ) {
+		if ( 'settings_page_source-affix' !== $hook ) {
+			return;
+		}
+
+		wp_enqueue_script( 'source-affix-blog-posts', SOURCE_AFFIX_URL . '/assets/js/blog-posts.js', array( 'jquery' ), Source_Affix::VERSION, true );
 	}
 
 	/**
@@ -484,49 +500,34 @@ class Source_Affix_Admin {
 	 *
 	 * @since 2.0.0
 	 */
-	public function render_sidebar() {
-		?>
-		<div class="sidebox">
-			<h3 class="sidebox-heading">Help &amp; Support</h3>
-			<div class="sidebox-content">
-				<p><strong>Questions, bugs or great ideas?</strong></p>
+	public function render_sidebar( $object ) {
+		$object->render_sidebar_box(
+			array(
+				'title'   => 'Help &amp; Support',
+				'icon'    => 'dashicons-editor-help',
+				'content' => '<h4>Questions, bugs or great ideas?</h4>
 				<p><a href="https://wordpress.org/support/plugin/source-affix/#new-post" target="_blank">Visit plugin support page</a></p>
-				<p><strong>Wanna help make this plugin better?</strong></p>
-				<p><a href="https://wordpress.org/support/plugin/source-affix/reviews/#new-post" target="_blank">Review and rate this plugin on WordPress.org</a></p>
-			</div>
-		</div><!-- .sidebox -->
+				<h4>Wanna help make this plugin better?</h4>
+				<p><a href="https://wordpress.org/support/plugin/source-affix/reviews/#new-post" target="_blank">Review and rate this plugin on WordPress.org</a></p>',
+			),
+			$object
+		);
 
-		<div class="sidebox">
-			<h3 class="sidebox-heading">Recommended Plugins</h3>
-			<div class="sidebox-content">
-				<ol>
-					<li><a href="https://wpconcern.com/plugins/woocommerce-product-tabs/" target="_blank">WooCommerce Product Tabs</a></li>
-					<li><a href="https://wpconcern.com/plugins/nifty-coming-soon-and-under-construction-page/" target="_blank">Coming Soon & Maintenance Mode Page</a></li>
-					<li><a href="https://wpconcern.com/plugins/post-grid-elementor-addon/" target="_blank">Post Grid Elementor Addon</a></li>
-					<li><a href="https://wpconcern.com/plugins/advanced-google-recaptcha/" target="_blank">Advanced Google reCAPTCHA</a></li>
-					<li><a href="https://wpconcern.com/plugins/majestic-before-after-image/" target="_blank">Majestic Before After Image</a></li>
-					<li><a href="https://wpconcern.com/plugins/admin-customizer/" target="_blank">Admin Customizer</a></li>
-					<li><a href="https://wordpress.org/plugins/prime-addons-for-elementor/" target="_blank">Prime Addons for Elementor</a></li>
-				</ol>
-			</div>
-		</div><!-- .sidebox -->
+		$object->render_sidebar_box(
+			array(
+				'title'   => 'Recommended Plugins',
+				'content' => $this->get_recommended_plugins_content(),
+			),
+			$object
+		);
 
-		<div class="sidebox">
-			<h3 class="sidebox-heading">Recent Blog Posts</h3>
-			<div class="sidebox-content">
-				<?php $rss_items = $this->get_feed_items(); ?>
-
-				<?php if ( ! empty( $rss_items ) ) : ?>
-					<ol>
-						<?php foreach ( $rss_items as $item ) : ?>
-							<li><a href="<?php echo esc_url( $item['url'] ); ?>" target="_blank"><?php echo esc_html( $item['title'] ); ?></a></li>
-						<?php endforeach; ?>
-						</ol>
-				<?php endif; ?>
-			</div>
-		</div><!-- .sidebox -->
-
-		<?php
+		$object->render_sidebar_box(
+			array(
+				'title'   => 'Recent Blog Posts',
+				'content' => '<div class="ns-blog-list"></div>',
+			),
+			$object
+		);
 	}
 
 	/**
@@ -536,7 +537,7 @@ class Source_Affix_Admin {
 	 *
 	 * @return array Feed items array.
 	 */
-	private function get_feed_items() {
+	private function get_blog_feed_items() {
 		$output = array();
 
 		$rss = fetch_feed( 'https://www.nilambar.net/category/wordpress/feed' );
@@ -572,6 +573,22 @@ class Source_Affix_Admin {
 				'name' => esc_html__( 'Source Affix', 'source-affix' ),
 			)
 		);
+	}
+
+	public function get_posts_ajax_callback() {
+		$output = array();
+
+		$posts = $this->get_blog_feed_items();
+
+		if ( ! empty( $posts ) ) {
+			$output = $posts;
+		}
+
+		if ( ! empty( $output ) ) {
+			wp_send_json_success( $output, 200 );
+		} else {
+			wp_send_json_error( $output, 404 );
+		}
 	}
 
 	/**
@@ -612,5 +629,17 @@ class Source_Affix_Admin {
 		} else {
 			return $html;
 		}
+	}
+
+	public function get_recommended_plugins_content() {
+		return '<ol>
+						<li><a href="https://wpconcern.com/plugins/woocommerce-product-tabs/" target="_blank">WooCommerce Product Tabs</a></li>
+						<li><a href="https://wpconcern.com/plugins/nifty-coming-soon-and-under-construction-page/" target="_blank">Coming Soon & Maintenance Mode Page</a></li>
+						<li><a href="https://wpconcern.com/plugins/post-grid-elementor-addon/" target="_blank">Post Grid Elementor Addon</a></li>
+						<li><a href="https://wpconcern.com/plugins/advanced-google-recaptcha/" target="_blank">Advanced Google reCAPTCHA</a></li>
+						<li><a href="https://wpconcern.com/plugins/majestic-before-after-image/" target="_blank">Majestic Before After Image</a></li>
+						<li><a href="https://wpconcern.com/plugins/admin-customizer/" target="_blank">Admin Customizer</a></li>
+						<li><a href="https://wordpress.org/plugins/prime-addons-for-elementor/" target="_blank">Prime Addons for Elementor</a></li>
+					</ol>';
 	}
 }

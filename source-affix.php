@@ -1,6 +1,6 @@
 <?php
 /**
- * Source Affix Plugin.
+ * Source Affix Plugin
  *
  * Plugin Name: Source Affix
  * Plugin URI: https://www.nilambar.net/2013/10/source-affix-wordpress-plugin.html
