@@ -6,7 +6,7 @@ Tags: post, source, metabox, custom, posts, custom post type, meta, plugin,
 Stable tag: 2.0.3
 Requires PHP: 5.6
 Requires at least: 4.9
-Tested up to: 6.0
+Tested up to: 6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,7 +45,7 @@ Nice, make a post on the [Support Forum](http://wordpress.org/support/plugin/sou
 
 == Changelog ==
 
-= 2.0.3 - 21 Sep 2022 =
+= 2.0.3 - 26 Sep 2022 =
 * Minor bug fixes
 
 = 2.0.2 - 30 Jun 2022 =
