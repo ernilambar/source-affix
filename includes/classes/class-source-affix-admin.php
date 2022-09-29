@@ -90,11 +90,27 @@ class Source_Affix_Admin {
 
 		$this->optioner->set_page(
 			array(
-				'page_title'  => esc_html__( 'Source Affix', 'source-affix' ),
-				'menu_title'  => esc_html__( 'Source Affix', 'source-affix' ),
-				'capability'  => 'manage_options',
-				'menu_slug'   => 'source-affix',
-				'option_slug' => 'sa_plugin_options',
+				'page_title'    => esc_html__( 'Source Affix', 'source-affix' ),
+				'page_subtitle' => sprintf( esc_html__( 'Version: %s', 'source-affix' ), SOURCE_AFFIX_VERSION ),
+				'menu_title'    => esc_html__( 'Source Affix', 'source-affix' ),
+				'capability'    => 'manage_options',
+				'menu_slug'     => 'source-affix',
+				'option_slug'   => 'sa_plugin_options',
+			)
+		);
+
+		$this->optioner->set_quick_links(
+			array(
+				array(
+					'text' => 'Plugin Page',
+					'url'  => 'https://www.nilambar.net/2013/10/source-affix-wordpress-plugin.html',
+					'type' => 'primary',
+				),
+				array(
+					'text' => 'Get Support',
+					'url'  => 'https://wordpress.org/support/plugin/source-affix/#new-post',
+					'type' => 'secondary',
+				),
 			)
 		);
 
