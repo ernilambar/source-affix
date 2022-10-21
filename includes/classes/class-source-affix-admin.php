@@ -301,7 +301,7 @@ class Source_Affix_Admin {
 	public function source_affix_add_action_links( $links ) {
 		return array_merge(
 			array(
-				'settings' => '<a href="' . esc_url( $this->optioner->get_page_url() ) . '">' . esc_html__( 'Settings', 'source-affix' ) . '</a>',
+				'settings' => '<a href="' . esc_url( admin_url( 'options-general.php?page=source-affix' ) ) . '">' . esc_html__( 'Settings', 'source-affix' ) . '</a>',
 			),
 			$links
 		);
