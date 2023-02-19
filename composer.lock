@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ernilambar/optioner.git",
-                "reference": "c1b3cb40a513e39521ff2e6100aee9733bdaf2e8"
+                "reference": "044f1fe779ed0b2a9917fa4c78e207b5c1591be1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ernilambar/optioner/zipball/c1b3cb40a513e39521ff2e6100aee9733bdaf2e8",
-                "reference": "c1b3cb40a513e39521ff2e6100aee9733bdaf2e8",
+                "url": "https://api.github.com/repos/ernilambar/optioner/zipball/044f1fe779ed0b2a9917fa4c78e207b5c1591be1",
+                "reference": "044f1fe779ed0b2a9917fa4c78e207b5c1591be1",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                 "issues": "https://github.com/ernilambar/optioner/issues",
                 "source": "https://github.com/ernilambar/optioner/tree/2.0.8"
             },
-            "time": "2022-12-18T08:20:14+00:00"
+            "time": "2023-01-29T07:43:19+00:00"
         },
         {
             "name": "ernilambar/wp-admin-notice",
