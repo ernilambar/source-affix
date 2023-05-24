@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "637b336c4eeb3511db1a583830ff5483",
+    "content-hash": "636383ab32c700792cf32f32e3618325",
     "packages": [
         {
             "name": "ernilambar/optioner",
-            "version": "2.0.8",
+            "version": "2.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ernilambar/optioner.git",
-                "reference": "044f1fe779ed0b2a9917fa4c78e207b5c1591be1"
+                "reference": "b7ef22ac76b49afd6c2229451ff5909f794463f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ernilambar/optioner/zipball/044f1fe779ed0b2a9917fa4c78e207b5c1591be1",
-                "reference": "044f1fe779ed0b2a9917fa4c78e207b5c1591be1",
+                "url": "https://api.github.com/repos/ernilambar/optioner/zipball/b7ef22ac76b49afd6c2229451ff5909f794463f5",
+                "reference": "b7ef22ac76b49afd6c2229451ff5909f794463f5",
                 "shasum": ""
             },
             "require": {
@@ -44,22 +44,22 @@
             ],
             "support": {
                 "issues": "https://github.com/ernilambar/optioner/issues",
-                "source": "https://github.com/ernilambar/optioner/tree/2.0.8"
+                "source": "https://github.com/ernilambar/optioner/tree/2.0.9"
             },
-            "time": "2023-01-29T07:43:19+00:00"
+            "time": "2023-04-30T09:04:01+00:00"
         },
         {
             "name": "ernilambar/wp-admin-notice",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ernilambar/wp-admin-notice.git",
-                "reference": "1fd14ff6d79994750d25b4f529284a6942e117eb"
+                "reference": "99d73f74a17357a60abff104be06e5c07ec72f7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ernilambar/wp-admin-notice/zipball/1fd14ff6d79994750d25b4f529284a6942e117eb",
-                "reference": "1fd14ff6d79994750d25b4f529284a6942e117eb",
+                "url": "https://api.github.com/repos/ernilambar/wp-admin-notice/zipball/99d73f74a17357a60abff104be06e5c07ec72f7f",
+                "reference": "99d73f74a17357a60abff104be06e5c07ec72f7f",
                 "shasum": ""
             },
             "require": {
@@ -91,9 +91,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ernilambar/wp-admin-notice/issues/",
-                "source": "https://github.com/ernilambar/wp-admin-notice/tree/1.0.0"
+                "source": "https://github.com/ernilambar/wp-admin-notice/tree/1.0.1"
             },
-            "time": "2022-06-27T07:08:52+00:00"
+            "time": "2023-05-23T10:16:06+00:00"
         }
     ],
     "packages-dev": [],
