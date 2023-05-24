@@ -46,6 +46,7 @@ Nice, make a post on the [Support Forum](http://wordpress.org/support/plugin/sou
 == Changelog ==
 
 = 2.0.5 - 24 May 2023 =
+* Add rel option for links
 * Update Admin Notice package
 
 = 2.0.4 - 19 Feb 2023 =
