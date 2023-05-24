@@ -145,6 +145,7 @@ class Source_Affix {
 			'sa_source_title'       => esc_html__( 'Source :', 'source-affix' ),
 			'sa_source_style'       => 'COMMA',
 			'sa_source_open_style'  => 'BLANK',
+			'sa_source_rel'         => '',
 			'sa_source_position'    => 'APPEND',
 			'sa_load_plugin_styles' => 'YES',
 			'sa_make_required'      => 'NO',
@@ -213,6 +214,7 @@ class Source_Affix {
 
 		$defaults = array(
 			'new_window' => true,
+			'rel'        => '',
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -231,7 +233,13 @@ class Source_Affix {
 							$target_string .= ' target="_blank"';
 						}
 
-						$item = '<a href="' . esc_url( $link['url'] ) . '" ' . ( $target_string ? $target_string : '' ) . '>' . esc_html( $link['title'] ) . '</a>';
+						$rel_string = '';
+
+						if ( 0 !== strlen( $args['rel'] ) ) {
+							$rel_string .= ' rel="' . esc_attr( $args['rel'] ) . '"';
+						}
+
+						$item = '<a href="' . esc_url( $link['url'] ) . '" ' . ( $target_string ? $target_string : '' ) . ( $rel_string ? $rel_string : '' ) . '>' . esc_html( $link['title'] ) . '</a>';
 					} else {
 						$item = esc_html( $link['title'] );
 					}
@@ -257,6 +265,7 @@ class Source_Affix {
 		$defaults = array(
 			'style'      => 'COMMA',
 			'new_window' => true,
+			'rel'        => '',
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -313,6 +322,7 @@ class Source_Affix {
 			'title'      => '',
 			'style'      => 'COMMA',
 			'new_window' => true,
+			'rel'        => '',
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -369,6 +379,7 @@ class Source_Affix {
 					'title'      => $this->get_option( 'sa_source_title' ),
 					'style'      => $this->get_option( 'sa_source_style' ),
 					'new_window' => ( 'BLANK' === $this->get_option( 'sa_source_open_style' ) ) ? true : false,
+					'rel'        => $this->get_option( 'sa_source_rel' ),
 				);
 
 				$source_content = $this->get_source_content_markup( $current_post_id, $params );
@@ -398,6 +409,7 @@ class Source_Affix {
 			'title'      => esc_html__( 'Source :', 'source-affix' ),
 			'style'      => 'comma',
 			'new_window' => true,
+			'rel'        => '',
 		);
 
 		$atts = shortcode_atts( $defaults, $atts );
@@ -416,6 +428,7 @@ class Source_Affix {
 			'title'      => $atts['title'],
 			'style'      => strtoupper( $atts['style'] ),
 			'new_window' => rest_sanitize_boolean( $atts['new_window'] ),
+			'rel'        => $atts['rel'],
 		);
 
 		return $this->get_source_content_markup( $atts['id'], $params );

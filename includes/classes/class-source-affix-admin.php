@@ -38,6 +38,8 @@ class Source_Affix_Admin {
 	 */
 	protected $plugin;
 
+	protected $plugin_slug;
+
 	/**
 	 * Initialize the plugin.
 	 *
@@ -173,6 +175,18 @@ class Source_Affix_Admin {
 					'SELF'  => esc_html__( 'Same Window', 'source-affix' ),
 					'BLANK' => esc_html__( 'New Window', 'source-affix' ),
 				),
+			)
+		);
+
+		// Field: sa_source_rel.
+		$this->optioner->add_field(
+			'sa_settings_tab',
+			array(
+				'id'          => 'sa_source_rel',
+				'type'        => 'text',
+				'title'       => esc_html__( 'Rel Value', 'source-affix' ),
+				'placeholder' => 'Eg: nofollow',
+				'default'     => $defaults['sa_source_rel'],
 			)
 		);
 
