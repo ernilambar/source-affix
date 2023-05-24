@@ -3,7 +3,7 @@
 Contributors: rabmalin
 Donate link: https://www.nilambar.net/2013/10/source-affix-wordpress-plugin.html
 Tags: post, source, metabox, custom, posts, custom post type, meta, plugin, ClassicPress
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 Requires PHP: 5.6
 Requires at least: 4.9
 Tested up to: 6.2
@@ -44,6 +44,9 @@ Nice, make a post on the [Support Forum](http://wordpress.org/support/plugin/sou
 3. Sample view of source in front end
 
 == Changelog ==
+
+= 2.0.5 - 24 May 2023 =
+* Update Admin Notice package
 
 = 2.0.4 - 19 Feb 2023 =
 * Fix PHP 8 issue

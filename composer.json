@@ -1,9 +1,7 @@
 {
   "name": "ernilambar/source-affix",
-  "title": "Source Affix",
   "description": "Source Affix",
   "license": "GPL-2.0-or-later",
-  "minimum-stability" : "stable",
   "authors": [
     {
       "name": "Nilambar Sharma",

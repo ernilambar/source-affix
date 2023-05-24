@@ -1,6 +1,6 @@
 {
 	"name": "source-affix",
-	"version": "2.0.4",
+	"version": "2.0.5",
 	"license": "GPL-2.0+",
 	"main_file": "source-affix.php",
 	"repository": {
@@ -29,13 +29,13 @@
 		"deployAssets": false
 	},
 	"devDependencies": {
-		"@babel/core": "^7.20.12",
-		"@babel/preset-env": "^7.20.2",
-		"@wordpress/eslint-plugin": "^14.0.0",
-		"@wordpress/prettier-config": "^2.10.0",
+		"@babel/core": "^7.21.8",
+		"@babel/preset-env": "^7.21.5",
+		"@wordpress/eslint-plugin": "^14.6.0",
+		"@wordpress/prettier-config": "^2.16.0",
 		"bestzip": "^2.2.1",
-		"browser-sync": "^2.27.11",
-		"copy-files-from-to": "^3.8.0",
+		"browser-sync": "^2.29.3",
+		"copy-files-from-to": "^3.9.0",
 		"cross-var": "^1.1.0",
 		"dotenv": "^16.0.3",
 		"easy-replace-in-files": "^1.0.3",
@@ -52,8 +52,8 @@
 		"gulp-sass-glob": "^1.1.0",
 		"gulp-uglify": "^3.0.2",
 		"node-wp-i18n": "^1.2.7",
-		"prettier": "^2.8.4",
-		"sass": "^1.58.3",
+		"prettier": "^2.8.8",
+		"sass": "^1.62.1",
 		"shx": "^0.3.4",
 		"wp-deployer": "^1.0.3"
 	}
